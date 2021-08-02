@@ -1,11 +1,12 @@
 # nvim-luamake (Experimental)
-This is a simple plugin to use the vim :make command asynchronously in neovim.
+This is a simple plugin to use the vim `:make` and `:lmake` command
+asynchronously in neovim.
 
 ## Why ?
 With LSP integrated in neovim, I admit that this plugin is already outdated.
 Although I HATE to be linted in the face while I am coding and to see lints that
 I do not care about in my (ugly) code. Yes, configuration always bothers me.
-Also I like the :make, :grep command.
+Also I like the `:make`, `:grep` commands.
 
 ## Requirements
 [Neovim 0.5](https://github.com/neovim/neovim)  
