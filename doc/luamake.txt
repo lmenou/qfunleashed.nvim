@@ -1,0 +1,10 @@
+*luamake.txt*  -- Asynchronous make and lmake for neovim
+
+License: Apache 2.0 (See License file for details)
+
+				*luamake* - *nvim-luamake*
+
+This is a minimal and simple plugin written in lua rending possible an
+asynchronous |:make| and |:lmake| in neovim. With this plugin, let us hope you
+will enjoy linting and building your project/code without freezing your
+favourite editor (assuming your favourite editor is neovim).
