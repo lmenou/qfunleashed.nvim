@@ -1,10 +1,67 @@
 *luamake.txt*  -- Asynchronous make and lmake for neovim
 
-License: Apache 2.0 (See License file for details)
+License: Apache 2.0 (See LICENSE file for details)
 
 				*luamake* - *nvim-luamake*
 
 This is a minimal and simple plugin written in lua rending possible an
 asynchronous |:make| and |:lmake| in neovim. With this plugin, let us hope you
 will enjoy linting and building your project/code without freezing your
-favourite editor (assuming your favourite editor is neovim).
+favourite editor.
+
+1. Usage - Commands				*luamake-commands*
+2. Configuration				*luamake-configuration*
+3. About the plugin				*luamake-about*
+
+Requirement: Neovim 0.5
+
+============================================================================
+1. Usage - Commands				*luamake-commands*
+
+				*luamake-Amake* *:Amake*
+Amake [{filename}]		Start an asynchronous |:make| on the specified
+				buffer. A |'makeprg'| and an |'errorformat'|
+				must be set before running the command.
+				{'filename'} (optional) is the name of the
+				file you wish to make, appended to the
+				|'makeprg'| if necessary. |QuickFixCmdPre| and
+				|QuickFixCmdPost| should work as expected.
+
+				*luamake-Lamake* *:Lamake*
+Lamake [{filename}]		Works as |:Amake| except that the location
+				list (|location-list|) is populated with
+				errors instead of the quickfix list.
+
+				*luamake-StopAmake* *:StopAmake*
+StopAmake			Command to stop the running job. Currently,
+				one asynchronous job can be run in one time.
+				One will see what is going to happen in the
+				following.
+
+============================================================================
+2. Configuration				*luamake-configuration*
+
+				*luamake-g:quick_copen* *g:quick_copen*
+g:quick_copen			If this global value is set to 1 (Default 0)
+				in your |init.vim|, then the quickfix list
+				(respectively, the location list if |:Lamake|
+				was launched) is open at the end of the
+				asynchronous job. Else, "Job is done." will be
+				printed out in the command line at the end of
+				the job or "Job has been stopped." if
+				|:StopAmake| was typed.
+
+============================================================================
+3. About the plugin				*luamake-about*
+
+The plugin is at an early stage, if you encounter an issue (This is more
+likely to happen), feel free to open it at
+https://github.com/lmenou/nvim-luamake/issues. Otherwise, pull requests are
+more than welcome as well at https://github.com/lmenou/nvim-luamake/pulls.
+
+Philosophy of the plugin: This plugin aims at being as minimal as possible. It
+does not (and will not) provide embedded linting in the buffer but rather use
+vim and neovim core functionalities to populate the (location or quickfix) with
+a opinionated and not frustrating better way.
+
+vim:tw=78:ts=8:ft=help:norl:
