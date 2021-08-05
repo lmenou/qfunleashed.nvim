@@ -62,7 +62,12 @@ more than welcome as well at https://github.com/lmenou/nvim-luamake/pulls.
 
 Philosophy of the plugin: This plugin aims at being as minimal as possible. It
 does not (and will not) provide embedded linting in the buffer but rather use
-vim and neovim core functionalities to populate the (location or quickfix) with
-a opinionated and not frustrating better way.
+vim and neovim core functionalities to populate the (location or quickfix)
+with a opinionated and not frustrating better way.
+
+Besides, there is no need to compete with other amazing plugins such as
+syntastic: https://github.com/vim-syntastic/syntastic, ALE:
+https://github.com/dense-analysis/ale or nvim-lint:
+https://github.com/mfussenegger/nvim-lint.
 
 vim:tw=78:ts=8:ft=help:norl:
