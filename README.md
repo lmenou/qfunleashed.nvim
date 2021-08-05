@@ -21,7 +21,7 @@ for plugins in neovim (See `:help packages`). If the last solution is chosen,
 please do not forget to run `:helptags` to get the documentation.
 
 ## How to use ?  
-(For now, we will see what happens in the future)  Set a compiler (See `:help
+(For now, we will see what happens in the future) Set a compiler (See `:help
 :make`, `:help :compiler`, `:help 'errorformat'`) and a makeprg (See `:help
 'makeprg'`)  
 
@@ -29,7 +29,7 @@ please do not forget to run `:helptags` to get the documentation.
   asynchronously.  
 - Run `Lamake` command to lint your code and fill the location list
   asynchronously.
-- Run `StopAmake` to stop the running job.  
+- Run `StopJob` to stop the running job.  
 
 Use `:copen` to open the quickfix window. Use `:lopen` to open the location
 window. If you set `g:quick_copen` (See Configuration part), the quickfix (or
@@ -38,7 +38,7 @@ errors parsed. Otherwise, a message "Job is done." will be printed out. If you
 stop the job, a message "Job has been stopped." is shown.
 
 ## Configuration
-In your `init.vim`, you can set:  `let g:quick_copen = 1` to open the quickfix
+In your `init.vim`, you can set:  `let g:quick_open = 1` to open the quickfix
 list (or location window) at the end of the running job.  
 
 ## Cautions 
