@@ -33,8 +33,8 @@ Lamake [{filename}]		Works as |:Amake| except that the location
 				list (|location-list|) is populated with
 				errors instead of the quickfix list.
 
-				*luamake-StopAmake* *:StopAmake*
-StopAmake			Command to stop the running job. Currently,
+				*luamake-StopJob* *:StopJob*
+StopJob				Command to stop the running job. Currently,
 				one asynchronous job can be run in one time.
 				One will see what is going to happen in the
 				following.
@@ -42,8 +42,8 @@ StopAmake			Command to stop the running job. Currently,
 ============================================================================
 2. Configuration				*luamake-configuration*
 
-				*luamake-g:quick_copen* *g:quick_copen*
-g:quick_copen			If this global value is set to 1 (Default 0)
+				*luamake-g:quick_open* *g:quick_open*
+g:quick_open			If this global value is set to 1 (Default 0)
 				in your |init.vim|, then the quickfix list
 				(respectively, the location list if |:Lamake|
 				was launched) is open at the end of the
