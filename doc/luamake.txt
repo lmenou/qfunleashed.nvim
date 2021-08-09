@@ -20,16 +20,18 @@ Requirement: Neovim 0.5
 1. Usage - Commands				*luamake-commands*
 
 				*luamake-Amake* *:Amake*
-Amake [{filename}]		Start an asynchronous |:make| on the specified
+Amake[!] [{filename}]		Start an asynchronous |:make| on the specified
 				buffer. A |'makeprg'| and an |'errorformat'|
 				must be set before running the command.
-				{'filename'} (optional) is the name of the
+				{filename} (optional) is the name of the
 				file you wish to make, appended to the
 				|'makeprg'| if necessary. |QuickFixCmdPre| and
-				|QuickFixCmdPost| should work as expected.
+				|QuickFixCmdPost| should work as expected. If
+                                a bang [!] modifier is added, the first error
+                                is not jumped to.
 
 				*luamake-Lamake* *:Lamake*
-Lamake [{filename}]		Works as |:Amake| except that the location
+Lamake[!] [{filename}]		Works as |:Amake| except that the location
 				list (|location-list|) is populated with
 				errors instead of the quickfix list.
 
@@ -69,5 +71,7 @@ Besides, there is no need to compete with other amazing plugins such as
 syntastic: https://github.com/vim-syntastic/syntastic, ALE:
 https://github.com/dense-analysis/ale or nvim-lint:
 https://github.com/mfussenegger/nvim-lint.
+
+Thanks for testing/using this plugin.
 
 vim:tw=78:ts=8:ft=help:norl:
