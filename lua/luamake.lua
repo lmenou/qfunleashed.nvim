@@ -120,9 +120,9 @@ function module.amake(arg, loc, bang)
   end
 
   if bang == "!" then
-    first = true
-  else
     first = false
+  else
+    first = true
   end
 
   local opts = {
