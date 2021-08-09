@@ -4,6 +4,10 @@ module = {}
 jobinfo = {}
 stop_work = false
 
+function module.reload()
+  print("Plugin reloaded")
+end
+
 local function get_makeprg(arg, winnr, bufnr)
   local function get_buf_makeprg() 
     return api.nvim_buf_get_option(bufnr, 'makeprg') 
@@ -69,9 +73,15 @@ local function handler(job_id, data, event)
         if localjob == false then
           api.nvim_command [[copen]]
           api.nvim_command [[wincmd k]]
+          if first == true then
+            api.nvim_command [[cfirst]]
+          end
         else
           api.nvim_command [[lopen]]
           api.nvim_command [[wincmd k]]
+          if first == true then
+            api.nvim_command [[lfirst]]
+          end
         end
       else
         print("Job is done.")
@@ -94,7 +104,7 @@ function module.stop_job()
   end
 end
 
-function module.amake(arg, loc)
+function module.amake(arg, loc, bang)
 
   local winnr = fn.win_getid()
   local bufnr = api.nvim_win_get_buf(winnr)
@@ -107,6 +117,12 @@ function module.amake(arg, loc)
     localjob = true
   else
     localjob = false
+  end
+
+  if bang == "!" then
+    first = true
+  else
+    first = false
   end
 
   local opts = {

@@ -1,9 +1,24 @@
 " Prevent to load twice
-" TODO: To change !
-if exists('g:loaded_luamake')
-  finish
-endif
-let g:loaded_luamake = 1
+" if exists('g:loaded_luamake')
+"   finish
+" endif
+" let g:loaded_luamake = 1
+
+
+" For the developement of the plugin
+function! Reload()
+lua << EOF
+  for k in pairs(package.loaded) do 
+    if k:match("^luamake") then 
+      package.loaded[k] = nil 
+    end
+  end
+  require("luamake").reload()
+  require("luamake")
+EOF
+endfunction
+command Reload call Reload()
+nnoremap <Leader>pa :Reload<CR>
 
 " Wish to see the quickfix list or not ?
 " Set the global value
@@ -14,8 +29,8 @@ else
 endif
 
 command! -bang -bar -nargs=* -complete=file Amake 
-      \ lua require("luamake").amake(<q-args>, 0)
+      \ lua require("luamake").amake(<q-args>, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file Lamake 
-      \ lua require("luamake").amake(<q-args>, 1)
+      \ lua require("luamake").amake(<q-args>, 1, "<bang>")
 command! -bang -bar StopJob
       \ lua require("luamake").stop_job()
