@@ -11,7 +11,7 @@ import selectionpattern.trackerCreator as trac
 coucou
 
 h = 4.0
-dct_diff = {"diffA": 1, "diffB": 6}
+dict_diff = {"diffA": 1, "diffB": 6}
 dict_rate = {"alphaA": 0.4, "betaA": 0.9, "alphaB": 0.4444, "betaB": 1.0}
 dict_grid = {"size": 100, "shape": 100, "periodic": True}
 dict_perturb = {"epsilon": 2e-3, "q": dict_rate["betaB"]}

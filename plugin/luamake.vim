@@ -1,23 +1,23 @@
 " Prevent to load twice
-if exists('g:loaded_luamake')
-  finish
-endif
-let g:loaded_luamake = 1
+" if exists('g:loaded_luamake')
+"   finish
+" endif
+" let g:loaded_luamake = 1
 
 " For the developement of the plugin
-" function! Reload()
-" lua << EOF
-"   for k in pairs(package.loaded) do 
-"     if k:match("^luamake") then 
-"       package.loaded[k] = nil 
-"     end
-"   end
-"   require("luamake").reload()
-"   require("luamake")
-" EOF
-" endfunction
-" command Reload call Reload()
-" nnoremap <Leader>pa :Reload<CR>
+function! Reload()
+lua << EOF
+  for k in pairs(package.loaded) do 
+    if k:match("^luamake") then 
+      package.loaded[k] = nil 
+    end
+  end
+  require("luamake").reload()
+  require("luamake")
+EOF
+endfunction
+command Reload call Reload()
+nnoremap <Leader>pa :Reload<CR>
 
 " Wish to see the quickfix list or not ?
 " Set the global value

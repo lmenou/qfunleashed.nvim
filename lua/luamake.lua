@@ -5,9 +5,9 @@ jobinfo = {}
 stop_work = false
 
 -- For plugin development
--- function module.reload()
---   print("Plugin reloaded")
--- end
+function module.reload()
+  print("Plugin reloaded")
+end
 
 local function get_makeprg(arg, winnr, bufnr)
   local function get_buf_makeprg() 
@@ -68,25 +68,25 @@ local function handler(job_id, data, event)
       else
         fn.setloclist(0, {}, " ", opts)
       end
-      jobinfo["data"] = {}
-      api.nvim_command("doautocmd QuickFixCmdPost")
+      api.nvim_command [[doautocmd QuickFixCmdPost]]
       if quickopen then
         if localjob == false then
           api.nvim_command [[copen]]
           api.nvim_command [[wincmd k]]
-          if first == true then
-            api.nvim_command [[cfirst]]
+          if first == true and jobinfo["data"][1] ~= "" then
+            api.nvim_command [[silent! cfirst]]
           end
         else
           api.nvim_command [[lopen]]
           api.nvim_command [[wincmd k]]
-          if first == true then
-            api.nvim_command [[lfirst]]
+          if first == true and jobinfo["data"][1] ~= "" then
+            api.nvim_command [[silent! lfirst]]
           end
         end
       else
         print("Job is done.")
       end
+      jobinfo["data"] = {}
     end
   end
 end
