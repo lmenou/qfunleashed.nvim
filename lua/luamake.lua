@@ -4,9 +4,10 @@ module = {}
 jobinfo = {}
 stop_work = false
 
-function module.reload()
-  print("Plugin reloaded")
-end
+-- For plugin development
+-- function module.reload()
+--   print("Plugin reloaded")
+-- end
 
 local function get_makeprg(arg, winnr, bufnr)
   local function get_buf_makeprg() 
@@ -138,3 +139,5 @@ function module.amake(arg, loc, bang)
 end
 
 return module
+
+-- lua: et tw=79 ts=2 sts=2 sw=2
