@@ -29,6 +29,24 @@ local function get_makeprg(arg, winnr, bufnr)
   jobinfo["makeprg"] = makeprg
 end
 
+local function get_grepprg(arg, winnr, bufnr)
+  local function get_buf_grepprg()
+    return api.nvim_buf_get_option(bufnr, 'grepprg')
+  end
+
+  local grepprg
+  if pcall(get_buf_grepprg) then
+    grepprg = get_buf_grepprg()
+  else
+    grepprg = api.nvim_get_option('grepprg')
+  end
+
+  grepprg = grepprg .. " " .. arg
+  grepprg = fn.expandcmd(grepprg)
+
+  jobinfo["grepprg"] = grepprg
+end
+
 local function get_errorformat(winnr, bufnr)
   local function get_buf_efm()
     return api.nvim_buf_get_option(bufnr, 'errorformat')
@@ -42,6 +60,21 @@ local function get_errorformat(winnr, bufnr)
   end
 
   jobinfo["errorformat"] = efm
+end
+
+local function get_grepformat(winnr, bufnr)
+  local function get_buf_grepfmt()
+    return api.nvim_buf_get_option(bufnr, 'grepformat')
+  end
+
+  local grepfmt
+  if pcall(get_buf_grepfmt) then
+    grepfmt = get_buf_grepfmt()
+  else
+    grepfmt = api.nvim_get_option('grepformat')
+  end
+
+  jobinfo["grepformat"] = grepfmt
 end
 
 jobinfo["data"] = {}
@@ -105,12 +138,17 @@ function module.stop_job()
   end
 end
 
-function module.ajob(arg, loc, bang)
+function module.ajob(arg, grep, loc, bang)
 
   local winnr = fn.win_getid()
   local bufnr = api.nvim_win_get_buf(winnr)
-  get_makeprg(arg, winnr, bufnr)
-  get_errorformat(winnr, bufnr)
+  if grep == 0 then
+    get_makeprg(arg, winnr, bufnr)
+    get_errorformat(winnr, bufnr)
+  else
+    get_grepprg(arg, winnr, bufnr)
+    get_grepformat(winnr, bufnr)
+  end
 
   api.nvim_command [[doautocmd QuickFixCmdPre]]
 
@@ -134,7 +172,12 @@ function module.ajob(arg, loc, bang)
     stdout_buffered = false
   }
 
-  local job_id = fn.jobstart(jobinfo["makeprg"], opts)
+  local job_id
+  if grep == 0 then
+    job_id = fn.jobstart(jobinfo["makeprg"], opts)
+  else
+    print(jobinfo["grepprg"])
+  end
   jobinfo["jobid"] = job_id
 end
 
