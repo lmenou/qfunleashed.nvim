@@ -5,9 +5,9 @@ jobinfo = {}
 stop_work = false
 
 -- For plugin development
-function module.reload()
-  print("Plugin reloaded")
-end
+-- function module.reload()
+--   print("Plugin reloaded")
+-- end
 
 local function get_makeprg(arg, winnr, bufnr)
   local function get_buf_makeprg() 
