@@ -105,14 +105,14 @@ function module.stop_job()
   end
 end
 
-function module.amake(arg, loc, bang)
+function module.ajob(arg, loc, bang)
 
   local winnr = fn.win_getid()
   local bufnr = api.nvim_win_get_buf(winnr)
   get_makeprg(arg, winnr, bufnr)
   get_errorformat(winnr, bufnr)
 
-  api.nvim_command("doautocmd QuickFixCmdPre")
+  api.nvim_command [[doautocmd QuickFixCmdPre]]
 
   if loc == 1 then
     localjob = true
