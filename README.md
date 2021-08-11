@@ -1,5 +1,5 @@
 # nvim-luamake  
-This is a simple plugin to use the vim `:make` and `:lmake` command
+This is a simple plugin to use the vim `:make` and `:grep` command
 asynchronously in neovim.
 
 ## Why ?  
