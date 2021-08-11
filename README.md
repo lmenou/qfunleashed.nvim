@@ -1,4 +1,4 @@
-# nvim-luamake (Experimental) 
+# nvim-luamake  
 This is a simple plugin to use the vim `:make` and `:lmake` command
 asynchronously in neovim.
 
