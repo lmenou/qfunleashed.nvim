@@ -31,7 +31,9 @@ command! -bang -bar -nargs=* -complete=file Amake
       \ lua require("luamake").ajob(<q-args>, 0, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file Lamake 
       \ lua require("luamake").ajob(<q-args>, 0, 1, "<bang>")
-command! -bang -bar -nargs=* -complete=file Agrep 
+command! -bang -bar -nargs=+ -complete=file Agrep 
+      \ lua require("luamake").ajob(<q-args>, 1, 0, "<bang>")
+command! -bang -bar -nargs=+ -complete=file Lagrep 
       \ lua require("luamake").ajob(<q-args>, 1, 1, "<bang>")
 command! -bang -bar StopJob
       \ lua require("luamake").stop_job()

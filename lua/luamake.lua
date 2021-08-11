@@ -9,6 +9,7 @@ function module.reload()
   print("Plugin reloaded")
 end
 
+-- Plugin 
 local function get_makeprg(arg, winnr, bufnr)
   local function get_buf_makeprg() 
     return api.nvim_buf_get_option(bufnr, 'makeprg') 
@@ -80,9 +81,19 @@ end
 jobinfo["data"] = {}
 local function handler(job_id, data, event)
   if event == "stdout" or event == "stderr" then
-    if data then
-      vim.list_extend(jobinfo["data"], data)
+    --[[ 
+    From time to time data is an empty string
+    I do not know why... 
+    This is weird, I know
+    --]]
+    for k, v in pairs(data) do
+      if v == "" then
+        data[k] = nil
+      end
     end
+    -- End of the cleaning
+    -- Enable a better parsing ?
+    vim.list_extend(jobinfo["data"], data)
   end
 
   if event == "exit" then
@@ -91,11 +102,20 @@ local function handler(job_id, data, event)
       jobinfo["data"] = {}
       stop_work = false
     else
-      local opts = {
-        title = jobinfo["makeprg"],
-        lines = jobinfo["data"],
-        efm = jobinfo["errorformat"]
-      }
+      local opts
+      if jobinfo["name"] == "make" then
+        opts = {
+          title = jobinfo["makeprg"],
+          lines = jobinfo["data"],
+          efm = jobinfo["errorformat"]
+        }
+      else
+        opts = {
+          title = jobinfo["grepprg"],
+          lines = jobinfo["data"],
+          efm = jobinfo["grepformat"]
+        }
+      end
       if localjob == false then
         fn.setqflist({}, " ", opts)
       else
@@ -117,7 +137,12 @@ local function handler(job_id, data, event)
           end
         end
       else
-        print("Job is done.")
+        -- print("Job is done.")
+        if localjob == false and first == true and jobinfo["data"][1] ~= "" then
+          api.nvim_command [[silent! cfirst]]
+        elseif localjob == true and first == true and jobinfo["data"][1] ~= "" then 
+          api.nvim_command [[silent! lfirst]]
+        end
       end
       jobinfo["data"] = {}
     end
@@ -145,9 +170,11 @@ function module.ajob(arg, grep, loc, bang)
   if grep == 0 then
     get_makeprg(arg, winnr, bufnr)
     get_errorformat(winnr, bufnr)
+    jobinfo["name"] = "make"
   else
     get_grepprg(arg, winnr, bufnr)
     get_grepformat(winnr, bufnr)
+    jobinfo["name"] = "grep"
   end
 
   api.nvim_command [[doautocmd QuickFixCmdPre]]
@@ -176,7 +203,7 @@ function module.ajob(arg, grep, loc, bang)
   if grep == 0 then
     job_id = fn.jobstart(jobinfo["makeprg"], opts)
   else
-    print(jobinfo["grepprg"])
+    job_id = fn.jobstart(jobinfo["grepprg"], opts)
   end
   jobinfo["jobid"] = job_id
 end
