@@ -24,25 +24,27 @@ please do not forget to run `:helptags` to get the documentation.
  Set a compiler (See `:help :make`, `:help :compiler`, `:help 'errorformat'`)
  and a makeprg (See `:help 'makeprg'`).  
 
-- Run `Amake` command to lint your code and fill the quickfix list
+- Run `:Amake` command to lint your code and fill the quickfix list
   asynchronously.  
-- Run `Lamake` command to lint your code and fill the location list
+- Run `:Lamake` command to lint your code and fill the location list
   asynchronously.  
 
 It is also possible to set a grepper (See `:help :grep` and `:help 'grepformat'`).  
-- Run `Agrep` command to grep in your code and fill the quickfix list
+- Run `:Agrep` command to grep in your code and fill the quickfix list
   asynchronously.  
-- Run `Lagrep` command to grep in your code and fill the location list
+- Run `:Lagrep` command to grep in your code and fill the location list
   asynchronously.  
 
 If you miss something, it is possible to stop the current running job.  
-- Run `StopJob` to stop the running job.  
+- Run `:StopJob` to stop the running job.  
 
 Use `:copen` to open the quickfix window. Use `:lopen` to open the location
 window. If you set `g:quick_copen` (See Configuration part), the quickfix (or
 location) window will open automatically with (provided the good errorformat)
 errors parsed. Otherwise, a message "Job is done." will be printed out. If you
 stop the job, a message "Job has been stopped." is shown.
+
+Please, feel free to read the help for further information.
 
 ## Configuration
 In your `init.vim`, you can set:  `let g:quick_open = 1` to open the quickfix
@@ -52,7 +54,6 @@ list (or location window) at the end of the running job.
 Use it (if you are very old school like me) at your own risk !  This plugin is
 at an early stage, let us hope more is following.  
 
-Please, read the help for further information.
 
 ## Contributing and Issues 
 Please, feel free to let me know if you encounter an issue using this plugin

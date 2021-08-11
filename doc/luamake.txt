@@ -28,7 +28,9 @@ Amake[!] [{filename}]		Start an asynchronous |:make| on the specified
 				|'makeprg'| if necessary. |QuickFixCmdPre| and
 				|QuickFixCmdPost| should work as expected. If
                                 a bang [!] modifier is added, the first error
-                                is not jumped to.
+                                is not jumped to. Special characters in the
+				command line (%, #, #n, ...) shall be supported
+				(|cmdline-special|).
 
 				*luamake-Lamake* *:Lamake*
 Lamake[!] [{filename}]		Works as |:Amake| except that the location
@@ -44,7 +46,9 @@ Agrep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
 				|'grepprg'| and must be given if necessary.
 				|QuickFixCmdPre| and |QuickFixCmdPost| should
 				work as expected. If a bang [!] modifier is
-				added, the first find is not jumped to.
+				added, the first find is not jumped to. Special
+				characters in the command line (%, #, #n, ...)
+				shall be supported (|cmdline-special|).
 
 				*luamake-Lapgrep* *:Lagrep*
 Lagrep[!] [{options} {args}]	Works as |:Agrep| except that the location list
