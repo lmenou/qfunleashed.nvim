@@ -6,7 +6,7 @@ License: Apache 2.0 (See LICENSE file for details)
 				*luamake* - *nvim-luamake*
 
 This is a minimal and simple plugin written in lua rending possible an
-asynchronous |:make| and |:lmake| in neovim. With this plugin, let us hope you
+asynchronous |:make| and |:grep| in neovim. With this plugin, let us hope you
 will enjoy linting and building your project/code without freezing your
 favourite editor.
 
@@ -34,6 +34,22 @@ Amake[!] [{filename}]		Start an asynchronous |:make| on the specified
 Lamake[!] [{filename}]		Works as |:Amake| except that the location
 				list (|location-list|) is populated with
 				errors instead of the quickfix list.
+
+				*luamake-Agrep* *:Agrep*
+Agrep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
+				directory or file. A |'grepprg'| and a
+				|'grepformat'| must be set before running the
+				command. {options} and {args} are specific
+				arguments that depends on your chosen
+				|'grepprg'| and must be given if necessary.
+				|QuickFixCmdPre| and |QuickFixCmdPost| should
+				work as expected. If a bang [!] modifier is
+				added, the first find is not jumped to.
+
+				*luamake-Lapgrep* *:Lagrep*
+Lagrep[!] [{options} {args}]	Works as |:Agrep| except that the location list
+				(|location-list|) is populated with findings
+				instead of the quickfix list.
 
 				*luamake-StopJob* *:StopJob*
 StopJob				Command to stop the running job. Currently,
