@@ -1,4 +1,4 @@
-*luamake.txt*  -- Asynchronous make and lmake for neovim
+*luamake.txt*  -- Asynchronous make and grep for neovim
 
 Author: lmenou
 License: Apache 2.0 (See LICENSE file for details)
