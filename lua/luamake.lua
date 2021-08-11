@@ -137,7 +137,7 @@ local function handler(job_id, data, event)
           end
         end
       else
-        -- print("Job is done.")
+        print("Job is done.")
         if localjob == false and first == true and jobinfo["data"][1] ~= "" then
           api.nvim_command [[silent! cfirst]]
         elseif localjob == true and first == true and jobinfo["data"][1] ~= "" then 
