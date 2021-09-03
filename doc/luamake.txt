@@ -21,25 +21,38 @@ Requirement: Neovim 0.5
 
 				*luamake-Amake* *:Amake*
 Amake[!] [{filename}]		Start an asynchronous |:make| on the specified
-				buffer. A |'makeprg'| and an |'errorformat'|
-				must be set before running the command.
-				{filename} (optional) is the name of the
-				file you wish to make, appended to the
-				|'makeprg'| if necessary. |QuickFixCmdPre| and
+				buffer and fill the quickfix list (|quickfix|).
+				A |'makeprg'| and an |'errorformat'| must be
+				set before running the command. {filename}
+				(optional) is the name of the file you wish to
+				make, appended to the |'makeprg'| if
+				necessary. |QuickFixCmdPre| and
 				|QuickFixCmdPost| should work as expected. If
                                 a bang [!] modifier is added, the first error
                                 is not jumped to. Special characters in the
-				command line (%, #, #n, ...) shall be supported
-				(|cmdline-special|).
+				command line (%, #, #n, ...) shall be
+				supported (|cmdline-special|).
+
+				*luamake-AmakeAdd* *:AmakeAdd*
+AmakeAdd[!] [{filename}]	Works as |:Amake| except that items generated
+				by the job are appended to the current
+				quickfix list (|quickfix|).
 
 				*luamake-Lamake* *:Lamake*
 Lamake[!] [{filename}]		Works as |:Amake| except that the location
 				list (|location-list|) is populated with
-				errors instead of the quickfix list.
+				errors instead of the quickfix list
+				(|quickfix|).
+
+				*luamake-LamakeAdd* *:LamakeAdd*
+LamakeAdd[!] [{filename}]	Works as |:Lamake| except that items generated
+				by the job are appended to the current
+				location list (|location-list|).
 
 				*luamake-Agrep* *:Agrep*
 Agrep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
-				directory or file. A |'grepprg'| and a
+				directory or file and fill the quickfix list
+				(|quickfix|). A |'grepprg'| and a
 				|'grepformat'| must be set before running the
 				command. {options} and {args} are specific
 				arguments that depends on your chosen
@@ -50,10 +63,20 @@ Agrep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
 				characters in the command line (%, #, #n, ...)
 				shall be supported (|cmdline-special|).
 
+				*luamake-AgrepAdd* *:AgrepAdd*
+AgrepAdd[!] [{filename}]	Works as |:Agrep| except that items generated
+				by the job are appended to the current
+				quickfix list (|quickfix|).
+
 				*luamake-Lapgrep* *:Lagrep*
 Lagrep[!] [{options} {args}]	Works as |:Agrep| except that the location list
 				(|location-list|) is populated with findings
-				instead of the quickfix list.
+				instead of the quickfix list (|quickfix|).
+
+				*luamake-LapgrepAdd* *:LagrepAdd*
+LagrepAdd[!] [{filename}]	Works as |:Lagrep| except that items generated
+				by the job are appended to the current
+				location list (|location-list|).
 
 				*luamake-StopJob* *:StopJob*
 StopJob				Command to stop the running job. Currently,
@@ -67,12 +90,12 @@ StopJob				Command to stop the running job. Currently,
 				*luamake-g:quick_open* *g:quick_open*
 g:quick_open			If this global value is set to 1 (Default 0)
 				in your |init.vim|, then the quickfix list
-				(respectively, the location list if |:Lamake|
-				was launched) is open at the end of the
-				asynchronous job. Else, "Job is done." will be
-				printed out in the command line at the end of
-				the job or "Job has been stopped." if
-				|:StopAmake| was typed.
+				(respectively, the location list if a local
+				asynchronous job was launched) is open at
+				the end of the asynchronous job. Else, "Job is
+				done." will be printed out in the command line
+				at the end of the job or "Job has been
+				stopped." if |:StopJob| was typed.
 
 ============================================================================
 3. About the plugin				*luamake-about*
