@@ -155,6 +155,7 @@ local function handler(job_id, data, event)
         end
       end
       jobinfo["data"] = {}
+      jobinfo["jobid"] = nil
     end
   end
 end
