@@ -5,9 +5,9 @@ jobinfo = {}
 stop_work = false
 
 -- For plugin development
--- function module.reload()
---   print("Plugin reloaded")
--- end
+function module.reload()
+  print("Plugin reloaded")
+end
 
 -- Plugin 
 local function get_makeprg(arg, winnr, bufnr)
@@ -116,10 +116,20 @@ local function handler(job_id, data, event)
           efm = jobinfo["grepformat"]
         }
       end
-      if localjob == false then
-        fn.setqflist({}, " ", opts)
+      -- TODO: Need to optimize this !!!
+      if adding == false then
+        if localjob == false then
+          fn.setqflist({}, " ", opts)
+        else
+          fn.setloclist(0, {}, " ", opts)
+        end
       else
-        fn.setloclist(0, {}, " ", opts)
+        opts.nr = 0
+        if localjob == false then
+          fn.setqflist({}, "a", opts)
+        else
+          fn.setloclist(0, {}, "a", opts)
+        end
       end
       api.nvim_command [[doautocmd QuickFixCmdPost]]
       if quickopen then
@@ -163,7 +173,7 @@ function module.stop_job()
   end
 end
 
-function module.ajob(arg, grep, loc, bang)
+function module.ajob(arg, grep, loc, add, bang)
 
   local winnr = fn.win_getid()
   local bufnr = api.nvim_win_get_buf(winnr)
@@ -189,6 +199,12 @@ function module.ajob(arg, grep, loc, bang)
     first = false
   else
     first = true
+  end
+
+  if add == 1 then
+    adding = true
+  else
+    adding = false
   end
 
   local opts = {
