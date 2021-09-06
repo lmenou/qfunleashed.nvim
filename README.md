@@ -18,7 +18,7 @@ always bothers me.  Also, I like the `:make`, `:grep` commands.
 -  Some "greppers"  
 
 ## Installation 
-With your favourite plugin manager, you can take a look at
+With your favourite plugin manager, you can have a look at
 [packer.nvim](https://github.com/wbthomason/packer.nvim) or [vim
 plug](https://github.com/junegunn/vim-plug) or even use the native solution
 for plugins in Neovim (See `:help packages`). If the last solution is chosen,
