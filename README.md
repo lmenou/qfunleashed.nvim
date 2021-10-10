@@ -29,15 +29,15 @@ please do not forget to run `:helptags` to get the documentation.
 Set a compiler (See `:help :make`, `:help :compiler`, `:help 'errorformat'`)
 and a makeprg (See `:help 'makeprg'`).  
 
-- Run `:Amake` command to lint/build your code and fill the quickfix list
+- Run `:Make` command to lint/build your code and fill the quickfix list
   asynchronously.  
-- Run `:Lamake` command to lint/build your code and fill the location list
+- Run `:Lmake` command to lint/build your code and fill the location list
   asynchronously.  
 
 It is also possible to set a grepper (See `:help :grep` and `:help 'grepformat'`).  
-- Run `:Agrep` command to grep in your code and fill the quickfix list
+- Run `:Grep` command to grep in your code and fill the quickfix list
   asynchronously.  
-- Run `:Lagrep` command to grep in your code and fill the location list
+- Run `:Lgrep` command to grep in your code and fill the location list
   asynchronously.  
 
 If you miss something, it is possible to stop the current running job.  
@@ -45,7 +45,7 @@ If you miss something, it is possible to stop the current running job.
 
 If you wish to add other items to your current (quickfix or location) lists,
 simply add `Add` after the previous asynchronous quickfix commands (e.g.
-`:AmakeAdd`, `:AgrepAdd`, etc).  
+`:MakeAdd`, `:LgrepAdd`, etc).  
 
 Use `:copen` to open the quickfix window. Use `:lopen` to open the location
 window. If you set `g:quick_copen` (See Configuration part), the quickfix (or
