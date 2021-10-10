@@ -1,27 +1,27 @@
 " Prevent to load twice
-if exists('g:loaded_luamake')
-  finish
-endif
-let g:loaded_luamake = 1
+" if exists('g:loaded_luamake')
+"   finish
+" endif
+" let g:loaded_luamake = 1
 
 " Save user compatible options
 let s:save_cpo = &cpo
 set cpo&vim
 
 " For the developement of the plugin
-" function! Reload()
-" lua << EOF
-"   for k in pairs(package.loaded) do 
-"     if k:match("^luamake") then 
-"       package.loaded[k] = nil 
-"     end
-"   end
-"   require("luamake").reload()
-"   require("luamake")
-" EOF
-" endfunction
-" command Reload call Reload()
-" nnoremap <Leader>pa :Reload<CR>
+function! Reload()
+lua << EOF
+  for k in pairs(package.loaded) do 
+    if k:match("^luamake") then 
+      package.loaded[k] = nil 
+    end
+  end
+  require("luamake").reload()
+  require("luamake")
+EOF
+endfunction
+command Reload call Reload()
+nnoremap <Leader>pa :Reload<CR>
 
 " Wish to see the quickfix list or not ?
 " Set the global value
@@ -31,21 +31,21 @@ else
   lua quickopen = true
 endif
 
-command! -bang -bar -nargs=* -complete=file Amake 
+command! -bang -bar -nargs=* -complete=file Make 
       \ lua require("luamake").ajob(<q-args>, 0, 0, 0, "<bang>")
-command! -bang -bar -nargs=* -complete=file Lamake 
+command! -bang -bar -nargs=* -complete=file Lmake 
       \ lua require("luamake").ajob(<q-args>, 0, 1, 0, "<bang>")
-command! -bang -bar -nargs=* -complete=file AmakeAdd
+command! -bang -bar -nargs=* -complete=file MakeAdd
       \ lua require("luamake").ajob(<q-args>, 0, 0, 1, "<bang>")
-command! -bang -bar -nargs=* -complete=file LamakeAdd
+command! -bang -bar -nargs=* -complete=file LmakeAdd
       \ lua require("luamake").ajob(<q-args>, 0, 1, 1, "<bang>")
-command! -bang -bar -nargs=+ -complete=file Agrep 
+command! -bang -bar -nargs=+ -complete=file Grep 
       \ lua require("luamake").ajob(<q-args>, 1, 0, 0, "<bang>")
-command! -bang -bar -nargs=+ -complete=file Lagrep 
+command! -bang -bar -nargs=+ -complete=file Lgrep 
       \ lua require("luamake").ajob(<q-args>, 1, 1, 0, "<bang>")
-command! -bang -bar -nargs=+ -complete=file AgrepAdd
+command! -bang -bar -nargs=+ -complete=file GrepAdd
       \ lua require("luamake").ajob(<q-args>, 1, 0, 1, "<bang>")
-command! -bang -bar -nargs=+ -complete=file LagrepAdd
+command! -bang -bar -nargs=+ -complete=file LgrepAdd
       \ lua require("luamake").ajob(<q-args>, 1, 1, 1, "<bang>")
 command! -bang -bar StopJob
       \ lua require("luamake").stop_job()
