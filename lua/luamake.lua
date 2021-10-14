@@ -29,7 +29,7 @@ local function get_jobid_pos(jobinfo, job_id)
   end
 end
 
-local function get_makeprg(arg, winnr, bufnr)
+local function get_makeprg(arg, winnr, bufnr, pos)
   local function get_buf_makeprg() 
     return api.nvim_buf_get_option(bufnr, 'makeprg') 
   end
@@ -49,7 +49,7 @@ local function get_makeprg(arg, winnr, bufnr)
   jobinfo[pos]["makeprg"] = makeprg
 end
 
-local function get_grepprg(arg, winnr, bufnr)
+local function get_grepprg(arg, winnr, bufnr, pos)
   local function get_buf_grepprg()
     return api.nvim_buf_get_option(bufnr, 'grepprg')
   end
@@ -67,7 +67,7 @@ local function get_grepprg(arg, winnr, bufnr)
   jobinfo[pos]["grepprg"] = grepprg
 end
 
-local function get_errorformat(winnr, bufnr)
+local function get_errorformat(winnr, bufnr, pos)
   local function get_buf_efm()
     return api.nvim_buf_get_option(bufnr, 'errorformat')
   end
@@ -82,7 +82,7 @@ local function get_errorformat(winnr, bufnr)
   jobinfo[pos]["errorformat"] = efm
 end
 
-local function get_grepformat(winnr, bufnr)
+local function get_grepformat(winnr, bufnr, pos)
   local function get_buf_grepfmt()
     return api.nvim_buf_get_option(bufnr, 'grepformat')
   end
@@ -198,6 +198,7 @@ end
 
 function module.ajob(arg, grep, loc, add, bang)
 
+  local pos
   if loc == 1 then
     pos = "location"
   else
@@ -207,12 +208,12 @@ function module.ajob(arg, grep, loc, add, bang)
   local winnr = fn.win_getid()
   local bufnr = api.nvim_win_get_buf(winnr)
   if grep == 0 then
-    get_makeprg(arg, winnr, bufnr)
-    get_errorformat(winnr, bufnr)
+    get_makeprg(arg, winnr, bufnr, pos)
+    get_errorformat(winnr, bufnr, pos)
     jobinfo[pos]["name"] = "make"
   else
-    get_grepprg(arg, winnr, bufnr)
-    get_grepformat(winnr, bufnr)
+    get_grepprg(arg, winnr, bufnr, pos)
+    get_grepformat(winnr, bufnr, pos)
     jobinfo[pos]["name"] = "grep"
   end
 
