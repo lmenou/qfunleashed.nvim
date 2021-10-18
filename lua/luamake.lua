@@ -41,9 +41,7 @@ local function get_makeprg(arg, winnr, bufnr, pos)
     makeprg = vim.api.nvim_get_option('makeprg')
   end
 
-  if arg then
-    makeprg = makeprg .. " " .. arg
-  end
+  makeprg = makeprg .. " " .. arg
   makeprg = vim.fn.expandcmd(makeprg)
 
   jobinfo[pos]["makeprg"] = makeprg
@@ -99,7 +97,7 @@ end
 
 local function handler(job_id, data, event)
 
-  -- To know on which job to act ?
+  -- To know on which job to act
   local index = get_jobid_pos(jobinfo, job_id)
 
   if event == "stdout" or event == "stderr" then
@@ -119,10 +117,10 @@ local function handler(job_id, data, event)
   end
 
   if event == "exit" then
-    if stop_work then
-      print("Job has been stopped.")
+    if jobinfo[index].stop_job then
+      print("Job(s) has(ve) been stopped.")
       jobinfo[index]["data"] = {}
-      stop_work = false
+      jobinfo[index].stop_job = false
     else
       local opts
       if jobinfo[index]["name"] == "make" then
@@ -182,16 +180,34 @@ local function handler(job_id, data, event)
   end
 end
 
-function module.stop_job()
-  local job_id = jobinfo[pos]["jobid"]
+function module.completion(arglead, cmdline, cursorpos)
+  return "quickfix\nlocation\nall"
+end
 
-  if job_id == nil then
-    print("No job seems to run.")
-  else 
-    stop_work = true
-    jobstop = fn.jobstop(job_id)
-    if jobstop == 0 then
-      print("Job Id is not valid, failed to stop the job.")
+function module.stop_job(arg)
+  local jobstop
+  if arg == nil then
+    if jobinfo.quickfix.jobid then
+      jobinfo.quickfix.stop_job = true
+      jobstop = fn.jobstop(jobinfo.quickfix.jobid)
+      if not jobstop then
+        print("Quickfix jobId is not valid, failed to stop the job.")
+      end 
+    end
+    if jobinfo.location.jobid then
+      jobinfo.location.stop_job = true
+      jobstop = fn.jobstop(jobinfo.location.jobid)
+      if not jobstop then
+        print("Location jobId is not valid, failed to stop the job.")
+      end
+    end
+  end
+
+  if arg ~= nil then
+    jobinfo[arg].stop_job = true
+    jobstop = fn.jobstop(jobinfo[arg].jobid)
+    if not jobstop then
+      print(arg .. " jobIs is not valid, failed to stop the job.")
     end
   end
 end

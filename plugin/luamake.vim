@@ -23,6 +23,11 @@ endfunction
 command Reload call Reload()
 nnoremap <Leader>pa :Reload<CR>
 
+function! s:LuamakeComplete(arglead, cmdline, cursorpos)
+  let l:list = luaeval("require'luamake'.completion(arglead, cmdline, cursorpos)")
+  return l:list
+endfunction
+
 " Wish to see the quickfix list or not ?
 " Set the global value
 if !exists('g:quick_open') || g:quick_open == 0
@@ -47,8 +52,8 @@ command! -bang -bar -nargs=+ -complete=file GrepAdd
       \ lua require("luamake").ajob(<q-args>, 1, 0, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file LgrepAdd
       \ lua require("luamake").ajob(<q-args>, 1, 1, 1, "<bang>")
-command! -bang -bar StopJob
-      \ lua require("luamake").stop_job()
+command -bar -nargs=? -complete=custom,<sid>LuamakeComplete StopJob
+      \ lua require("luamake").stop_job(<f-args>)
 
 " Restore compatible options
 let &cpo = s:save_cpo
