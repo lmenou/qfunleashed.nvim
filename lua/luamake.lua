@@ -21,6 +21,7 @@ end
 -- Plugin 
 
 -- This is weird, is there a way to optimize this ?
+
 local function get_jobid_pos(jobinfo, job_id)
   for k, v in pairs(jobinfo) do
     if v.jobid == job_id then
@@ -121,6 +122,7 @@ local function handler(job_id, data, event)
       print("Job(s) has(ve) been stopped.")
       jobinfo[index]["data"] = {}
       jobinfo[index].stop_job = false
+      jobinfo[index].name = nil
     else
       local opts
       if jobinfo[index]["name"] == "make" then
@@ -136,6 +138,7 @@ local function handler(job_id, data, event)
           efm = jobinfo[index]["grepformat"]
         }
       end
+      jobinfo[index].name = nil
       -- TODO: Need to optimize this !!!
       if adding == false then
         if index == "quickfix" then
@@ -181,7 +184,26 @@ local function handler(job_id, data, event)
 end
 
 function module.completion(arglead, cmdline, cursorpos)
-  return "quickfix\nlocation\nall"
+  local quick = "quickfix: "
+  if jobinfo.quickfix.name == "make" then
+    quick = quick .. jobinfo.quickfix.makeprg
+  elseif jobinfo.quickfix.name == "grep" then
+    quick = quick .. jobinfo.quickfix.grepprg
+  else
+    quick = "quickfix: NULL"
+  end
+
+  local locat = "location: "
+  if jobinfo.location.name == "make" then
+    locat = locat .. jobinfo.location.makeprg
+  elseif jobinfo.location.name == "grep" then
+    locat = locat .. jobinfo.location.grepprg
+  else
+    locat = "location: NULL"
+  end
+
+  local rtn = quick .. "\n" .. locat .. "\n" .. "all"
+  return rtn
 end
 
 function module.stop_job(arg)
@@ -204,10 +226,15 @@ function module.stop_job(arg)
   end
 
   if arg ~= nil then
-    jobinfo[arg].stop_job = true
-    jobstop = fn.jobstop(jobinfo[arg].jobid)
-    if not jobstop then
-      print(arg .. " jobIs is not valid, failed to stop the job.")
+    if string.find(arg, "NULL") ~= nil then
+      print("No job is running here, keep moving on...")
+    else
+      arg = string.sub(arg, 1, string.find(arg, ":") - 1)
+      jobinfo[arg].stop_job = true
+      jobstop = fn.jobstop(jobinfo[arg].jobid)
+      if not jobstop then
+        print(arg .. " jobIs is not valid, failed to stop the job.")
+      end
     end
   end
 end
