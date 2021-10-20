@@ -12,9 +12,9 @@ jobinfo.quickfix.data = {}
 
 -- For plugin development
 
-function module.reload()
-  print("Plugin reloaded")
-end
+-- function module.reload()
+--   print("Plugin reloaded")
+-- end
 
 -- Plugin 
 
