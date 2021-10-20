@@ -64,6 +64,8 @@ Please, feel free to let me know if you encounter an issue using this plugin
 (this is more likely to happen) or simply submit a PR (provided you decipher
 my hieroglyphs), I would be happy to discuss !
 
+If you feel brave or helpful, code review are more than welcome too !
+
 ## License 
 This plugin is licensed under Apache 2.0 (same as Neovim). See the
 [LICENSE](https://github.com/lmenou/nvim-luamake/blob/master/LICENSE) file for
