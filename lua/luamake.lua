@@ -205,18 +205,22 @@ end
 function module.stop_job(arg)
   local jobstop
   if arg == nil then
-    if jobinfo.quickfix.jobid then
-      jobinfo.quickfix.stop_job = true
-      jobstop = fn.jobstop(jobinfo.quickfix.jobid)
-      if not jobstop then
-        print("Quickfix jobId is not valid, failed to stop the job.")
-      end 
-    end
-    if jobinfo.location.jobid then
-      jobinfo.location.stop_job = true
-      jobstop = fn.jobstop(jobinfo.location.jobid)
-      if not jobstop then
-        print("Location jobId is not valid, failed to stop the job.")
+    if jobinfo.quickfix.jobid == nil and jobinfo.location.jobid == nil then
+      print("No jobs are running, keep moving on...")
+    else
+      if jobinfo.quickfix.jobid then
+        jobinfo.quickfix.stop_job = true
+        jobstop = fn.jobstop(jobinfo.quickfix.jobid)
+        if not jobstop then
+          print("Quickfix jobId is not valid, failed to stop the job.")
+        end 
+      end
+      if jobinfo.location.jobid then
+        jobinfo.location.stop_job = true
+        jobstop = fn.jobstop(jobinfo.location.jobid)
+        if not jobstop then
+          print("Location jobId is not valid, failed to stop the job.")
+        end
       end
     end
   end
