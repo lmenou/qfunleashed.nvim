@@ -21,9 +21,9 @@ Requirement: Neovim 0.5
 
 				*luamake-Make* *:Make*
 Make[!] [{filename}]		Start an asynchronous |:make| on the specified
-				buffer and fill the quickfix list (|quickfix|).
-				A |'makeprg'| and an |'errorformat'| must be
-				set before running the command. {filename}
+				buffer and fill the |quickfix| list. A
+				|'makeprg'| and an |'errorformat'| must be set
+				before running the command. {filename}
 				(optional) is the name of the file you wish to
 				make, appended to the |'makeprg'| if
 				necessary. |QuickFixCmdPre| and
@@ -36,23 +36,22 @@ Make[!] [{filename}]		Start an asynchronous |:make| on the specified
 				*luamake-MakeAdd* *:MakeAdd*
 MakeAdd[!] [{filename}]	        Works as |:Make| except that items generated
 				by the job are appended to the current
-				quickfix list (|quickfix|).
+				|quickfix| list.
 
 				*luamake-Lmake* *:Lmake*
-Lmake[!] [{filename}]		Works as |:Make| except that the location
-				list (|location-list|) is populated with
-				errors instead of the quickfix list
-				(|quickfix|).
+Lmake[!] [{filename}]		Works as |:Make| except that the
+				|location-list| is populated with errors
+				instead of the |quickfix| list
 
 				*luamake-LmakeAdd* *:LmakeAdd*
 LmakeAdd[!] [{filename}]	Works as |:Lmake| except that items generated
 				by the job are appended to the current
-				location list (|location-list|).
+				|location-list|.
 
 				*luamake-Grep* *:Grep*
 Grep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
-				directory or file and fill the quickfix list
-				(|quickfix|). A |'grepprg'| and a
+				directory or file and fill the |quickfix| list
+				asynchronously. A |'grepprg'| and a
 				|'grepformat'| must be set before running the
 				command. {options} and {args} are specific
 				arguments that depends on your chosen
@@ -66,23 +65,45 @@ Grep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
 				*luamake-GrepAdd* *:GrepAdd*
 GrepAdd[!] [{filename}]	        Works as |:Grep| except that items generated
 				by the job are appended to the current
-				quickfix list (|quickfix|).
+				|quickfix| list.
 
 				*luamake-Lgrep* *:Lgrep*
-Lgrep[!] [{options} {args}]	Works as |:Grep| except that the location list
-				(|location-list|) is populated with findings
-				instead of the quickfix list (|quickfix|).
+Lgrep[!] [{options} {args}]	Works as |:Grep| except that the
+				|location-list| is populated with findings
+				instead of the |quickfix| list.
 
 				*luamake-LgrepAdd* *:LgrepAdd*
 LgrepAdd[!] [{filename}]	Works as |:Lgrep| except that items generated
 				by the job are appended to the current
-				location list (|location-list|).
+				|location-list|.
 
 				*luamake-StopJob* *:StopJob*
-StopJob				Command to stop the running job. Currently,
-				one asynchronous job can be run in one time.
-				One will see what is going to happen in the
-				following.
+StopJob [{arg}]			The plugin supports double-job handling. You
+				can launch two asynchronous jobs, one filling the
+				|quickfix| list and the other filling the
+				|location-list|. |StopJob| provides a granular
+				control over the submitted jobs. If {arg} is
+				not provided, all the running jobs will be
+				stopped. 
+
+				Let us assume now that two jobs are running
+				and you wish to stop the job filling the
+				|quickfix| list. {arg} must be of the form:
+				`quickfix: &makeprg or &grepprg` depending on
+				which command you launched. Similarly, if you
+				wish to stop the job filling the
+				|location-list|, you must set {arg} to:
+				`location: &makeprg or &grepprg` .
+
+				Obviously, this is tedious, but vim/nvim
+				API provided me a way to cover you. Hence, if
+				you wish to stop the quickfix job, type `q`
+				and hit <TAB> after |StopJob|, your command gets
+				completed. For the location job, type `l` and
+				hit <TAB>, the same occurs.
+				Oh ! And if you see `NULL` after the keyword, it
+				means that the job you wish to stop is either
+				done or not running.
 
 ============================================================================
 2. Configuration				*luamake-configuration*
@@ -91,11 +112,9 @@ StopJob				Command to stop the running job. Currently,
 g:quick_open			If this global value is set to 1 (Default 0)
 				in your |init.vim|, then the quickfix list
 				(respectively, the location list if a local
-				asynchronous job was launched) is open at
+				asynchronous job was launched) is opened at
 				the end of the asynchronous job. Else, "Job is
-				done." will be printed out in the command line
-				at the end of the job or "Job has been
-				stopped." if |:StopJob| was typed.
+				done." is printed in the command line.
 
 ============================================================================
 3. About the plugin				*luamake-about*
