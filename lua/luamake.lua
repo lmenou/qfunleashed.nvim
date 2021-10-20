@@ -10,8 +10,6 @@ jobinfo = {
 jobinfo.location.data = {}
 jobinfo.quickfix.data = {}
 
-stop_work = false
-
 -- For plugin development
 
 function module.reload()
@@ -19,8 +17,6 @@ function module.reload()
 end
 
 -- Plugin 
-
--- This is weird, is there a way to optimize this ?
 
 local function get_jobid_pos(jobinfo, job_id)
   for k, v in pairs(jobinfo) do
@@ -140,7 +136,7 @@ local function handler(job_id, data, event)
       end
       jobinfo[index].name = nil
       -- TODO: Need to optimize this !!!
-      if adding == false then
+      if jobinfo[index].adding == false then
         if index == "quickfix" then
           fn.setqflist({}, " ", opts)
         else
@@ -159,21 +155,21 @@ local function handler(job_id, data, event)
         if index == "quickfix" then
           api.nvim_command [[copen]]
           api.nvim_command [[wincmd k]]
-          if first == true and jobinfo[index]["data"][1] ~= "" then
+          if jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then
             api.nvim_command [[silent! cfirst]]
           end
         else
           api.nvim_command [[lopen]]
           api.nvim_command [[wincmd k]]
-          if first == true and jobinfo[index]["data"][1] ~= "" then
+          if jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then
             api.nvim_command [[silent! lfirst]]
           end
         end
       else
         print("Job is done.")
-        if index == "quickfix" and first == true and jobinfo[index]["data"][1] ~= "" then
+        if index == "quickfix" and jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then
           api.nvim_command [[silent! cfirst]]
-        elseif index == "location" and first == true and jobinfo[index]["data"][1] ~= "" then 
+        elseif index == "location" and jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then 
           api.nvim_command [[silent! lfirst]]
         end
       end
@@ -261,15 +257,15 @@ function module.ajob(arg, grep, loc, add, bang)
   end
 
   if bang == "!" then
-    first = false
+    jobinfo[pos].first = false
   else
-    first = true
+    jobinfo[pos].first = true
   end
 
   if add == 1 then
-    adding = true
+    jobinfo[pos].adding = true
   else
-    adding = false
+    jobinfo[pos].adding = false
   end
 
   local opts = {
