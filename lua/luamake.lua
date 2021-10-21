@@ -119,6 +119,7 @@ local function handler(job_id, data, event)
       jobinfo[index]["data"] = {}
       jobinfo[index].stop_job = false
       jobinfo[index].name = nil
+      jobinfo[index].jobid = nil
     else
       local opts
       if jobinfo[index]["name"] == "make" then
