@@ -8,20 +8,6 @@ let g:loaded_luamake = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-" For the developement of the plugin
-" function! Reload()
-" lua << EOF
-"   for k in pairs(package.loaded) do 
-"     if k:match("^luamake") then 
-"       package.loaded[k] = nil 
-"     end
-"   end
-"   require("luamake").reload()
-"   require("luamake")
-" EOF
-" endfunction
-" command Reload call Reload()
-" nnoremap <Leader>pa :Reload<CR>
 
 function! s:LuamakeComplete(arglead, cmdline, cursorpos)
   let l:list = luaeval("require'luamake'.completion(arglead, cmdline, cursorpos)")

@@ -10,11 +10,6 @@ jobinfo = {
 jobinfo.location.data = {}
 jobinfo.quickfix.data = {}
 
--- For plugin development
-
--- function module.reload()
---   print("Plugin reloaded")
--- end
 
 -- Plugin 
 
