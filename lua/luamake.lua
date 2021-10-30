@@ -200,23 +200,18 @@ end
 
 function module.ajob(arg, grep, loc, add, bang)
 
-  local pos
-  if loc == 1 then
-    pos = "location"
-  else
-    pos = "quickfix"
-  end
+  local pos = loc == 1 and "location" or "quickfix"
 
   local winnr = fn.win_getid()
   local bufnr = api.nvim_win_get_buf(winnr)
   if grep == 0 then
     get_makeprg(arg, winnr, bufnr, pos)
     get_errorformat(winnr, bufnr, pos)
-    jobinfo[pos]["name"] = "make"
+    jobinfo[pos].name = "make"
   else
     get_grepprg(arg, winnr, bufnr, pos)
     get_grepformat(winnr, bufnr, pos)
-    jobinfo[pos]["name"] = "grep"
+    jobinfo[pos].name = "grep"
   end
 
   if bang == "!" then
@@ -225,11 +220,7 @@ function module.ajob(arg, grep, loc, add, bang)
     jobinfo[pos].first = true
   end
 
-  if add == 1 then
-    jobinfo[pos].adding = true
-  else
-    jobinfo[pos].adding = false
-  end
+  jobinfo[pos].adding = add == 1 and true or false
 
   local opts = {
     on_stderr = handler,
@@ -241,13 +232,11 @@ function module.ajob(arg, grep, loc, add, bang)
 
   api.nvim_command [[doautocmd QuickFixCmdPre]]
 
-  local job_id
   if grep == 0 then
-    job_id = fn.jobstart(jobinfo[pos]["makeprg"], opts)
+    jobinfo[pos].jobid = fn.jobstart(jobinfo[pos].makeprg, opts)
   else
-    job_id = fn.jobstart(jobinfo[pos]["grepprg"], opts)
+    jobinfo[pos].jobid = fn.jobstart(jobinfo[pos].grepprg, opts)
   end
-  jobinfo[pos]["jobid"] = job_id
 end
 
 return module
