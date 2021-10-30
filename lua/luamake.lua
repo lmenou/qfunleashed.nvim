@@ -7,12 +7,10 @@ jobinfo = {
   quickfix = {},
 }
 
-jobinfo.location.data = {}
 jobinfo.quickfix.data = {}
+jobinfo.location.data = {}
 
-
--- Plugin 
-
+ -- [[ TO KNOW ON WHICH JOB TO ACT ]]
 local function get_jobid_pos(jobinfo, job_id)
   for k, v in pairs(jobinfo) do
     if v.jobid == job_id then
@@ -21,6 +19,7 @@ local function get_jobid_pos(jobinfo, job_id)
   end
 end
 
+ -- [[ GET OPTIONS REGARDING MAKE AND GREP ]]
 local function get_makeprg(arg, winnr, bufnr, pos)
   local function get_buf_makeprg() 
     return api.nvim_buf_get_option(bufnr, 'makeprg') 
@@ -87,94 +86,81 @@ local function get_grepformat(winnr, bufnr, pos)
   jobinfo[pos]["grepformat"] = grepfmt
 end
 
-local function handler(job_id, data, event)
+-- [[ SETTER FOR QUICKFIX AND LOCATION LIST ]]
+local function quickfix_setter(jobinfo)
+  local opts = {}
+  if jobinfo.quickfix.name == "make" then
+    opts.title = jobinfo.quickfix.makeprg
+    opts.efm = jobinfo.quickfix.errorformat
+  else
+    opts.title = jobinfo.quickfix.grepprg
+    opts.efm = jobinfo.quickfix.grepformat
+  end
+  opts.lines = jobinfo.quickfix.data
+  if jobinfo.quickfix.adding == false then
+    fn.setqflist({}, " ", opts)
+  else
+    opts.nr = 0
+    fn.setqflist({}, "a", opts)
+  end
+  if jobinfo.quickfix.first == true and jobinfo.quickfix.data[1] ~= nil then
+    api.nvim_command [[silent! cfirst]]
+  end
+end
 
+local function location_setter()
+  local opts = {}
+  if jobinfo.location.name == "make" then
+    opts.title = jobinfo.location.makeprg
+    opts.efm = jobinfo.location.errorformat
+  else
+    opts.title = jobinfo.location.grepprg
+    opts.efm = jobinfo.location.grepformat
+  end
+  opts.lines = jobinfo.location.data
+  if jobinfo.location.adding == false then
+    fn.setloclist(0, {}, " ", opts)
+  else
+    opts.nr = 0
+    fn.setloclist(0, {}, "a", opts)
+  end
+  if jobinfo.location.first == true and jobinfo.location.data[1] ~= nil then
+    api.nvim_command [[silent! lfirst]]
+  end
+end
+
+-- [[ HANDLER ]]
+local function handler(job_id, data, event)
   -- To know on which job to act
   local index = get_jobid_pos(jobinfo, job_id)
 
   if event == "stdout" or event == "stderr" then
-    --[[ 
-    From time to time data is an empty string
-    I do not know why... 
-    This is weird, I know
-    --]]
     for k, v in pairs(data) do
       if v == "" then
         data[k] = nil
       end
     end
-    -- End of the cleaning
-    -- Enable a better parsing ?
-    vim.list_extend(jobinfo[index]["data"], data)
+    vim.list_extend(jobinfo[index].data, data)
   end
 
   if event == "exit" then
     if jobinfo[index].stop_job then
       print("Job(s) has(ve) been stopped.")
-      jobinfo[index]["data"] = {}
-      jobinfo[index].stop_job = false
-      jobinfo[index].name = nil
-      jobinfo[index].jobid = nil
     else
-      local opts
-      if jobinfo[index]["name"] == "make" then
-        opts = {
-          title = jobinfo[index]["makeprg"],
-          lines = jobinfo[index]["data"],
-          efm = jobinfo[index]["errorformat"]
-        }
-      else
-        opts = {
-          title = jobinfo[index]["grepprg"],
-          lines = jobinfo[index]["data"],
-          efm = jobinfo[index]["grepformat"]
-        }
+      if index == "quickfix" then
+        quickfix_setter(jobinfo)
+      elseif index == "location" then
+        location_setter(jobinfo)
       end
-      jobinfo[index].name = nil
-      -- TODO: Need to optimize this !!!
-      if jobinfo[index].adding == false then
-        if index == "quickfix" then
-          fn.setqflist({}, " ", opts)
-        else
-          fn.setloclist(0, {}, " ", opts)
-        end
-      else
-        opts.nr = 0
-        if index == "quickfix" then
-          fn.setqflist({}, "a", opts)
-        else
-          fn.setloclist(0, {}, "a", opts)
-        end
-      end
-      api.nvim_command [[doautocmd QuickFixCmdPost]]
-      if quickopen then
-        if index == "quickfix" then
-          api.nvim_command [[copen]]
-          api.nvim_command [[wincmd k]]
-          if jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then
-            api.nvim_command [[silent! cfirst]]
-          end
-        else
-          api.nvim_command [[lopen]]
-          api.nvim_command [[wincmd k]]
-          if jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then
-            api.nvim_command [[silent! lfirst]]
-          end
-        end
-      else
-        print("Job is done.")
-        if index == "quickfix" and jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then
-          api.nvim_command [[silent! cfirst]]
-        elseif index == "location" and jobinfo[index].first == true and jobinfo[index]["data"][1] ~= "" then 
-          api.nvim_command [[silent! lfirst]]
-        end
-      end
-      jobinfo[index]["data"] = {}
-      jobinfo[index]["jobid"] = nil
     end
+    jobinfo[index].data = {}
+    jobinfo[index].stop_job = false
+    jobinfo[index].name = nil
+    jobinfo[index].jobid = nil
   end
 end
 
+-- [[ THE PLUGIN ITSELF ]]
 function module.completion(arglead, cmdline, cursorpos)
   local quick = "quickfix: "
   if jobinfo.quickfix.name == "make" then
