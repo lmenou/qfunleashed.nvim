@@ -149,7 +149,7 @@ local function handler(job_id, data, event)
     else
       if index == "quickfix" then
         quickfix_setter(jobinfo)
-      elseif index == "location" then
+      else
         location_setter(jobinfo)
       end
     end
@@ -162,31 +162,13 @@ end
 
 -- [[ THE PLUGIN ITSELF ]]
 function module.completion(arglead, cmdline, cursorpos)
-  local quick = "quickfix: "
-  if jobinfo.quickfix.name == "make" then
-    quick = quick .. jobinfo.quickfix.makeprg
-  elseif jobinfo.quickfix.name == "grep" then
-    quick = quick .. jobinfo.quickfix.grepprg
-  else
-    quick = "quickfix: NULL"
-  end
-
-  local locat = "location: "
-  if jobinfo.location.name == "make" then
-    locat = locat .. jobinfo.location.makeprg
-  elseif jobinfo.location.name == "grep" then
-    locat = locat .. jobinfo.location.grepprg
-  else
-    locat = "location: NULL"
-  end
-
-  local rtn = quick .. "\n" .. locat .. "\n" .. "all"
+  local rtn = "quickfix\nlocation\nall"
   return rtn
 end
 
 function module.stop_job(arg)
   local jobstop
-  if arg == nil then
+  if arg == nil or arg == "all" then
     if jobinfo.quickfix.jobid == nil and jobinfo.location.jobid == nil then
       print("No jobs are running, keep moving on...")
     else
@@ -207,16 +189,11 @@ function module.stop_job(arg)
     end
   end
 
-  if arg ~= nil then
-    if string.find(arg, "NULL") ~= nil then
-      print("No job is running here, keep moving on...")
-    else
-      arg = string.sub(arg, 1, string.find(arg, ":") - 1)
-      jobinfo[arg].stop_job = true
-      jobstop = fn.jobstop(jobinfo[arg].jobid)
-      if not jobstop then
-        print(arg .. " jobIs is not valid, failed to stop the job.")
-      end
+  if arg ~= nil or arg ~= "all" then
+    jobinfo[arg].stop_job = true
+    jobstop = fn.jobstop(jobinfo[arg].jobid)
+    if not jobstop then 
+      print("arg .. jobId is not valid, failed to stop the job.")
     end
   end
 end
