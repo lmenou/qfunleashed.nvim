@@ -103,9 +103,6 @@ local function quickfix_setter(jobinfo)
     opts.nr = 0
     fn.setqflist({}, "a", opts)
   end
-  if jobinfo.quickfix.first == true and jobinfo.quickfix.data[1] ~= nil then
-    api.nvim_command [[silent! cfirst]]
-  end
 end
 
 local function location_setter()
@@ -123,9 +120,6 @@ local function location_setter()
   else
     opts.nr = 0
     fn.setloclist(0, {}, "a", opts)
-  end
-  if jobinfo.location.first == true and jobinfo.location.data[1] ~= nil then
-    api.nvim_command [[silent! lfirst]]
   end
 end
 
@@ -149,8 +143,20 @@ local function handler(job_id, data, event)
     else
       if index == "quickfix" then
         quickfix_setter(jobinfo)
+        if jobinfo.quickfix.first == true and jobinfo.quickfix.data[1] ~= nil then
+          api.nvim_command [[silent! cfirst]]
+        end
+        if quickopen then
+          api.nvim_command [[copen | wincmd p]]
+        end
       else
         location_setter(jobinfo)
+        if jobinfo.location.first == true and jobinfo.location.data[1] ~= nil then
+          api.nvim_command [[silent! lfirst]]
+        end
+        if quickopen then
+          api.nvim_command [[lopen | wincmd p]]
+        end
       end
     end
     jobinfo[index].data = {}
@@ -172,28 +178,30 @@ function module.stop_job(arg)
     if jobinfo.quickfix.jobid == nil and jobinfo.location.jobid == nil then
       print("No jobs are running, keep moving on...")
     else
-      if jobinfo.quickfix.jobid then
-        jobinfo.quickfix.stop_job = true
-        jobstop = fn.jobstop(jobinfo.quickfix.jobid)
-        if not jobstop then
-          print("Quickfix jobId is not valid, failed to stop the job.")
-        end 
-      end
-      if jobinfo.location.jobid then
-        jobinfo.location.stop_job = true
-        jobstop = fn.jobstop(jobinfo.location.jobid)
-        if not jobstop then
-          print("Location jobId is not valid, failed to stop the job.")
-        end
+      jobinfo.quickfix.stop_job = true
+      jobstop = fn.jobstop(jobinfo.quickfix.jobid)
+      if not jobstop then
+        print("Quickfix jobId is not valid, failed to stop the job.")
+      end 
+      jobinfo.location.stop_job = true
+      jobstop = fn.jobstop(jobinfo.location.jobid)
+      if not jobstop then
+        print("Location jobId is not valid, failed to stop the job.")
       end
     end
-  end
-
-  if arg ~= nil or arg ~= "all" then
-    jobinfo[arg].stop_job = true
-    jobstop = fn.jobstop(jobinfo[arg].jobid)
-    if not jobstop then 
-      print("arg .. jobId is not valid, failed to stop the job.")
+  else
+    if not (arg:match("location") or arg:match("quickfix")) then
+      print("Given argument is not valid !")
+    else
+      if jobinfo[arg].jobid == nil then
+        print("No job is running here, keep moving on...")
+      else
+        jobinfo[arg].stop_job = true
+        jobstop = fn.jobstop(jobinfo[arg].jobid)
+        if not jobstop then 
+          print("arg .. jobId is not valid, failed to stop the job.")
+        end
+      end
     end
   end
 end
