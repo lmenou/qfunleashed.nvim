@@ -84,26 +84,14 @@ StopJob [{arg}]			The plugin supports double-job handling. You
 				|location-list|. |StopJob| provides a granular
 				control over the submitted jobs. If {arg} is
 				not provided, all the running jobs will be
-				stopped. 
+				stopped.
 
-				Let us assume now that two jobs are running
-				and you wish to stop the job filling the
-				|quickfix| list. {arg} must be of the form:
-				`quickfix: &makeprg or &grepprg` depending on
-				which command you launched. Similarly, if you
-				wish to stop the job filling the
-				|location-list|, you must set {arg} to:
-				`location: &makeprg or &grepprg` .
-
-				Obviously, this is tedious, but vim/nvim
-				API provided me a way to cover you. Hence, if
-				you wish to stop the quickfix job, type `q`
-				and hit <TAB> after |StopJob|, your command gets
-				completed. For the location job, type `l` and
-				hit <TAB>, the same occurs.
-				Oh ! And if you see `NULL` after the keyword, it
-				means that the job you wish to stop is either
-				done or not running.
+                                {arg} must be a word of the following list:
+                                "quickfix", "location" or "all". Each word
+                                stop the job which operates on the respective
+                                list-name. "all" operates as if there were no
+                                arguments given. As those words are long to
+                                type, completion for those words is provided.
 
 ============================================================================
 2. Configuration				*luamake-configuration*
