@@ -10,17 +10,15 @@ set cpo&vim
 
 
 function! s:LuamakeComplete(arglead, cmdline, cursorpos)
-  let l:list = luaeval("require'luamake'.completion(arglead, cmdline, cursorpos)")
+  let l:list = luaeval("require'luamake'.completion()")
   return l:list
 endfunction
 
 " Wish to see the quickfix list or not ?
 " Set the global value
-if !exists('g:quick_open') || g:quick_open == 0
-  lua quickopen = false
-else
-  lua quickopen = true
-endif
+if !exists('g:luamake_quick_open')
+  let g:luamake_quick_open = 0
+end
 
 command! -bang -bar -nargs=* -complete=file Make 
       \ lua require("luamake").ajob(<q-args>, 0, 0, 0, "<bang>")

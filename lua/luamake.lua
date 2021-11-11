@@ -2,7 +2,7 @@ local fn, api = vim.fn, vim.api
 
 module = {}
 
-jobinfo = {
+local jobinfo = {
   location = {},
   quickfix = {},
 }
@@ -11,93 +11,39 @@ jobinfo.quickfix.data = {}
 jobinfo.location.data = {}
 
  -- [[ TO KNOW ON WHICH JOB TO ACT ]]
-local function get_jobid_pos(jobinfo, job_id)
-  for k, v in pairs(jobinfo) do
-    if v.jobid == job_id then
-      return k
-    end
+function jobinfo.get_jobid_pos(self, job_id)
+  if self.quickfix.jobid == job_id then
+    return "quickfix"
+  else
+    return "location"
   end
 end
 
- -- [[ GET OPTIONS REGARDING MAKE AND GREP ]]
-local function get_makeprg(arg, winnr, bufnr, pos)
-  local function get_buf_makeprg() 
-    return api.nvim_buf_get_option(bufnr, 'makeprg') 
-  end
+-- [[ GET THE ASYNC PRG PROPERTIES ]]
+function jobinfo.get_makeprg(self, arg, pos)
+  local makeprg = vim.o.makeprg
 
-  local makeprg
-  if pcall(get_buf_makeprg) then
-    makeprg = get_buf_makeprg()
-  else
-    makeprg = vim.api.nvim_get_option('makeprg')
-  end
-
-  makeprg = makeprg .. " " .. arg
-  makeprg = vim.fn.expandcmd(makeprg)
-
-  jobinfo[pos]["makeprg"] = makeprg
+  self[pos].makeprg = fn.expandcmd(makeprg .. " " .. arg)
 end
 
-local function get_grepprg(arg, winnr, bufnr, pos)
-  local function get_buf_grepprg()
-    return api.nvim_buf_get_option(bufnr, 'grepprg')
-  end
+function jobinfo.get_grepprg(self, arg, pos)
+  local grepprg = vim.o.grepprg
 
-  local grepprg
-  if pcall(get_buf_grepprg) then
-    grepprg = get_buf_grepprg()
-  else
-    grepprg = api.nvim_get_option('grepprg')
-  end
-
-  grepprg = grepprg .. " " .. arg
-  grepprg = fn.expandcmd(grepprg)
-
-  jobinfo[pos]["grepprg"] = grepprg
-end
-
-local function get_errorformat(winnr, bufnr, pos)
-  local function get_buf_efm()
-    return api.nvim_buf_get_option(bufnr, 'errorformat')
-  end
-
-  local efm
-  if pcall(get_buf_efm) then
-    efm = get_buf_efm()
-  else
-    efm = api.nvim_get_option('errorformat')
-  end
-
-  jobinfo[pos]["errorformat"] = efm
-end
-
-local function get_grepformat(winnr, bufnr, pos)
-  local function get_buf_grepfmt()
-    return api.nvim_buf_get_option(bufnr, 'grepformat')
-  end
-
-  local grepfmt
-  if pcall(get_buf_grepfmt) then
-    grepfmt = get_buf_grepfmt()
-  else
-    grepfmt = api.nvim_get_option('grepformat')
-  end
-
-  jobinfo[pos]["grepformat"] = grepfmt
+  self[pos].grepprg = fn.expandcmd(grepprg .. " " .. arg)
 end
 
 -- [[ SETTER FOR QUICKFIX AND LOCATION LIST ]]
-local function quickfix_setter(jobinfo)
+function jobinfo.quickfix_setter(self)
   local opts = {}
-  if jobinfo.quickfix.name == "make" then
-    opts.title = jobinfo.quickfix.makeprg
-    opts.efm = jobinfo.quickfix.errorformat
+  if self.quickfix.name == "make" then
+    opts.title = self.quickfix.makeprg
+    opts.efm = self.quickfix.errorformat
   else
-    opts.title = jobinfo.quickfix.grepprg
-    opts.efm = jobinfo.quickfix.grepformat
+    opts.title = self.quickfix.grepprg
+    opts.efm = self.quickfix.grepformat
   end
-  opts.lines = jobinfo.quickfix.data
-  if jobinfo.quickfix.adding == false then
+  opts.lines = self.quickfix.data
+  if self.quickfix.adding == false then
     fn.setqflist({}, " ", opts)
   else
     opts.nr = 0
@@ -105,17 +51,17 @@ local function quickfix_setter(jobinfo)
   end
 end
 
-local function location_setter()
+function jobinfo.location_setter(self)
   local opts = {}
-  if jobinfo.location.name == "make" then
-    opts.title = jobinfo.location.makeprg
-    opts.efm = jobinfo.location.errorformat
+  if self.location.name == "make" then
+    opts.title = self.location.makeprg
+    opts.efm = self.location.errorformat
   else
-    opts.title = jobinfo.location.grepprg
-    opts.efm = jobinfo.location.grepformat
+    opts.title = self.location.grepprg
+    opts.efm = self.location.grepformat
   end
-  opts.lines = jobinfo.location.data
-  if jobinfo.location.adding == false then
+  opts.lines = self.location.data
+  if self.location.adding == false then
     fn.setloclist(0, {}, " ", opts)
   else
     opts.nr = 0
@@ -126,7 +72,7 @@ end
 -- [[ HANDLER ]]
 local function handler(job_id, data, event)
   -- To know on which job to act
-  local index = get_jobid_pos(jobinfo, job_id)
+  local index = jobinfo:get_jobid_pos(job_id)
 
   if event == "stdout" or event == "stderr" then
     for k, v in pairs(data) do
@@ -142,19 +88,19 @@ local function handler(job_id, data, event)
       print("Job(s) has(ve) been stopped.")
     else
       if index == "quickfix" then
-        quickfix_setter(jobinfo)
+        jobinfo:quickfix_setter()
         if jobinfo.quickfix.first == true and jobinfo.quickfix.data[1] ~= nil then
           api.nvim_command [[silent! cfirst]]
         end
-        if quickopen then
+        if vim.g.luamake_quick_open == 1 then
           api.nvim_command [[copen | wincmd p]]
         end
       else
-        location_setter(jobinfo)
+        jobinfo:location_setter()
         if jobinfo.location.first == true and jobinfo.location.data[1] ~= nil then
           api.nvim_command [[silent! lfirst]]
         end
-        if quickopen then
+        if vim.g.luamake_quick_open == 1 then
           api.nvim_command [[lopen | wincmd p]]
         end
       end
@@ -167,7 +113,7 @@ local function handler(job_id, data, event)
 end
 
 -- [[ THE PLUGIN ITSELF ]]
-function module.completion(arglead, cmdline, cursorpos)
+function module.completion()
   local rtn = "quickfix\nlocation\nall"
   return rtn
 end
@@ -182,7 +128,7 @@ function module.stop_job(arg)
       jobstop = fn.jobstop(jobinfo.quickfix.jobid)
       if not jobstop then
         print("Quickfix jobId is not valid, failed to stop the job.")
-      end 
+      end
       jobinfo.location.stop_job = true
       jobstop = fn.jobstop(jobinfo.location.jobid)
       if not jobstop then
@@ -198,7 +144,7 @@ function module.stop_job(arg)
       else
         jobinfo[arg].stop_job = true
         jobstop = fn.jobstop(jobinfo[arg].jobid)
-        if not jobstop then 
+        if not jobstop then
           print("arg .. jobId is not valid, failed to stop the job.")
         end
       end
@@ -210,15 +156,13 @@ function module.ajob(arg, grep, loc, add, bang)
 
   local pos = loc == 1 and "location" or "quickfix"
 
-  local winnr = fn.win_getid()
-  local bufnr = api.nvim_win_get_buf(winnr)
   if grep == 0 then
-    get_makeprg(arg, winnr, bufnr, pos)
-    get_errorformat(winnr, bufnr, pos)
+    jobinfo:get_makeprg(arg, pos)
+    jobinfo[pos].errorformat = vim.o.errorformat
     jobinfo[pos].name = "make"
   else
-    get_grepprg(arg, winnr, bufnr, pos)
-    get_grepformat(winnr, bufnr, pos)
+    jobinfo:get_grepprg(arg, pos)
+    jobinfo[pos].grepformat = vim.o.grepformat
     jobinfo[pos].name = "grep"
   end
 
