@@ -1,2 +1,5 @@
 # Ignore tag file
 tags
+
+# Ignore Reload
+reload.vim
