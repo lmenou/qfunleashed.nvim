@@ -92,7 +92,7 @@ local function handler(job_id, data, event)
         if jobinfo.quickfix.first == true and jobinfo.quickfix.data[1] ~= nil then
           api.nvim_command [[silent! cfirst]]
         end
-        if vim.g.luamake_quick_open == 1 then
+        if vim.g.unleashed_build_quick_open == 1 then
           api.nvim_command [[copen | wincmd p]]
         end
       else
