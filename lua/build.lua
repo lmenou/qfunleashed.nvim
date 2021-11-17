@@ -100,7 +100,7 @@ local function handler(job_id, data, event)
         if jobinfo.location.first == true and jobinfo.location.data[1] ~= nil then
           api.nvim_command [[silent! lfirst]]
         end
-        if vim.g.luamake_quick_open == 1 then
+        if vim.g.unleashed_build_quick_open == 1 then
           api.nvim_command [[lopen | wincmd p]]
         end
       end

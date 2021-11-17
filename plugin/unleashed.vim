@@ -10,7 +10,7 @@ set cpo&vim
 
 
 function! s:LuamakeComplete(arglead, cmdline, cursorpos)
-  let l:list = luaeval("require'unleashed_build'.completion()")
+  let l:list = luaeval("require'build'.completion()")
   return l:list
 endfunction
 
@@ -21,23 +21,23 @@ if !exists('g:unleashed_build_quick_open')
 end
 
 command! -bang -bar -nargs=* -complete=file Make 
-      \ lua require("unleashed_build").ajob(<q-args>, 0, 0, 0, "<bang>")
+      \ lua require("build").ajob(<q-args>, 0, 0, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file Lmake 
-      \ lua require("unleashed_build").ajob(<q-args>, 0, 1, 0, "<bang>")
+      \ lua require("build").ajob(<q-args>, 0, 1, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file MakeAdd
-      \ lua require("unleashed_build").ajob(<q-args>, 0, 0, 1, "<bang>")
+      \ lua require("build").ajob(<q-args>, 0, 0, 1, "<bang>")
 command! -bang -bar -nargs=* -complete=file LmakeAdd
-      \ lua require("unleashed_build").ajob(<q-args>, 0, 1, 1, "<bang>")
+      \ lua require("build").ajob(<q-args>, 0, 1, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file Grep 
-      \ lua require("unleashed_build").ajob(<q-args>, 1, 0, 0, "<bang>")
+      \ lua require("build").ajob(<q-args>, 1, 0, 0, "<bang>")
 command! -bang -bar -nargs=+ -complete=file Lgrep 
-      \ lua require("unleashed_build").ajob(<q-args>, 1, 1, 0, "<bang>")
+      \ lua require("build").ajob(<q-args>, 1, 1, 0, "<bang>")
 command! -bang -bar -nargs=+ -complete=file GrepAdd
-      \ lua require("unleashed_build").ajob(<q-args>, 1, 0, 1, "<bang>")
+      \ lua require("build").ajob(<q-args>, 1, 0, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file LgrepAdd
-      \ lua require("unleashed_build").ajob(<q-args>, 1, 1, 1, "<bang>")
+      \ lua require("build").ajob(<q-args>, 1, 1, 1, "<bang>")
 command -bar -nargs=? -complete=custom,<sid>LuamakeComplete StopJob
-      \ lua require("unleashed_build").stop_job(<f-args>)
+      \ lua require("build").stop_job(<f-args>)
 
 " Restore compatible options
 let &cpo = s:save_cpo
