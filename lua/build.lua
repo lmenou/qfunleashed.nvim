@@ -105,6 +105,7 @@ local function handler(job_id, data, event)
         end
       end
     end
+    api.nvim_command [[doautocmd QuickFixCmdPost]]
     jobinfo[index].data = {}
     jobinfo[index].stop_job = false
     jobinfo[index].name = nil
