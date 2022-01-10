@@ -4,7 +4,7 @@ local api = vim.api
 M.echo_type = function(type, arg)
   local msg = string.format([[
   echohl %s
-  echomsg "unleashed: %s"
+  echomsg "E(unleashed): %s"
   echohl NONE
   ]], type, arg)
   api.nvim_command(msg)
