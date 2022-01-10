@@ -19,6 +19,16 @@ function jobs:find_job(job_id)
     found to handle the job]])
 end
 
+function jobs:find_type_job(loc, status)
+  local type_job = {}
+  for _, v in ipairs(self) do
+    if v.loc == loc - 1 and v.status == status then
+      table.insert(type_job, v)
+    end
+  end
+  return type_job
+end
+
 function jobs:clean_job()
   local count = 0
   for _, v in pairs(self) do
@@ -27,7 +37,7 @@ function jobs:clean_job()
     end
   end
 
-  if count >= 6 then
+  if count > 5 then
     for k, v in pairs(self) do
       if v.status == "Done" then
         table.remove(self, k)
@@ -67,7 +77,7 @@ local function handler(job_id, data, event)
 
   if event == "exit" then
     if job.stop_job then
-      print("Job(s) has(ve) been stopped.")
+      util.echo_type("MoreMsg", "Job(s) has(ve) been stopped.")
     else
       if job.loc == 0 then
         job:quickfix_setter()
@@ -94,7 +104,48 @@ local function handler(job_id, data, event)
 end
 
 function M.stop_job(arg)
-  util.echo_type("ErrorMsg", arg)
+  local jobstop
+
+
+  if tonumber(arg) ~= nil then
+    local jobid = tonumber(arg)
+    jobstop = fn.jobstop(jobid)
+    if jobstop == 0 then
+      util.echo_type("ErrorMsg", "Provided jobid is not valid, failed to stop the job")
+      return
+    else
+      local job = jobs_list:find_job(arg)
+      job.stop_job = true
+    end
+
+  else
+
+    local valid_arg = {"quickfix", "location"}
+    local loc, is_valid = util.is_in_table(valid_arg, arg)
+
+    if is_valid then
+      local type_job = jobs_list:find_type_job(loc, "Running")
+      if not next(type_job) then
+        util.echo_type("WarningMsg", "No jobs are running here.")
+        return
+      end
+
+      for k, v in ipairs(type_job) do
+        jobstop = fn.jobstop(v.jobid)
+        if not jobstop then
+          local err = string.format(
+            "Provided jobid %s is not valid, failed to stop this job",
+            tostring(v.jobid)
+          )
+          util.echo_type("ErrorMsg", err)
+        end
+        type_job[k].stop_job = true
+      end
+    else
+      util.echo_type("ErrorMsg", "Provided argument is not valid, failed to stop the jobs")
+    end
+
+  end
 end
 
 function M.ajob(arg, grep, loc, add, bang)

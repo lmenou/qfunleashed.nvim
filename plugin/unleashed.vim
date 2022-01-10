@@ -11,7 +11,7 @@ set cpo&vim
 
 " Function for completion on command line
 function! s:LuamakeComplete(arglead, cmdline, cursorpos)
-  let l:list = "location\nquickfix\nall"
+  let l:list = "location\nquickfix"
   return l:list
 endfunction
 
