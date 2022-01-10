@@ -5,10 +5,18 @@ local util = require"util"
 local M = {}
 
 local jobs = {}
+local jobs_list = setmetatable({}, {__index = jobs})
 
 -- [[ FIND THE JOB TO ACT ON ]]
 function jobs:find_job(job_id)
-  print(vim.inspect(jobs))
+  for _, v in ipairs(self) do
+    if v.jobid == job_id then
+      return v
+    end
+  end
+
+  util.echo_type("ErrorMsg", [[E(unleashed): No valid job_id 
+    found to handle the job]])
 end
 
 function jobs:clean_job()
@@ -19,10 +27,10 @@ function jobs:clean_job()
     end
   end
 
-  if count >= 5 then
-    for _, v in pairs(self) do
+  if count >= 6 then
+    for k, v in pairs(self) do
       if v.status == "Done" then
-        table.remove(self, 1)
+        table.remove(self, k)
         break
       end
     end
@@ -31,15 +39,17 @@ end
 
 -- [[ HANDLER ]]
 local function handler(job_id, data, event)
-  local job = jobs:find_job(job_id)
+  local job = jobs_list:find_job(job_id)
 
   if event == "stderr" then
-    if not data == {""} then
-      for _, v in ipairs(data) do
-        util.echo_type("ErrorMsg", v)
+    for k, v in ipairs(data) do
+      if v == "" then
+        data[k] = nil
       end
     end
-    job.status = "Error"
+    if next(data) then
+      util.echo_type("ErrorMsg", data[1])
+    end
   end
 
   if event == "stdout" then
@@ -79,7 +89,7 @@ local function handler(job_id, data, event)
     end
     api.nvim_command [[doautocmd QuickFixCmdPost]]
     job.status = "Done"
-    jobs:clean_job()
+    jobs_list:clean_job()
   end
 end
 
@@ -118,17 +128,16 @@ function M.ajob(arg, grep, loc, add, bang)
     t.grepformat = vim.o.grepformat
     t:get_grepprg(arg)
     t.status = "Running"
-    jobs[#jobs+1] = t
     t.jobid = fn.jobstart(t.grepprg, opts)
   else
     t.type = "make"
     t.errorformat = vim.o.errorformat
     t:get_makeprg(arg)
     t.status = "Running"
-    jobs[#jobs+1] = t
     t.jobid = fn.jobstart(t.makeprg, opts)
   end
 
+  jobs_list[#jobs_list+1] = t
 end
 
 return M
