@@ -9,8 +9,9 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
+" Function for completion on command line
 function! s:LuamakeComplete(arglead, cmdline, cursorpos)
-  let l:list = luaeval("require'build'.completion()")
+  let l:list = "location\nquickfix\nall"
   return l:list
 endfunction
 
@@ -21,23 +22,23 @@ if !exists('g:unleashed_build_quick_open')
 end
 
 command! -bang -bar -nargs=* -complete=file Make 
-      \ lua require("build").ajob(<q-args>, 0, 0, 0, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 0, 0, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file Lmake 
-      \ lua require("build").ajob(<q-args>, 0, 1, 0, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 0, 1, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file MakeAdd
-      \ lua require("build").ajob(<q-args>, 0, 0, 1, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 0, 0, 1, "<bang>")
 command! -bang -bar -nargs=* -complete=file LmakeAdd
-      \ lua require("build").ajob(<q-args>, 0, 1, 1, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 0, 1, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file Grep 
-      \ lua require("build").ajob(<q-args>, 1, 0, 0, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 1, 0, 0, "<bang>")
 command! -bang -bar -nargs=+ -complete=file Lgrep 
-      \ lua require("build").ajob(<q-args>, 1, 1, 0, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 1, 1, 0, "<bang>")
 command! -bang -bar -nargs=+ -complete=file GrepAdd
-      \ lua require("build").ajob(<q-args>, 1, 0, 1, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 1, 0, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file LgrepAdd
-      \ lua require("build").ajob(<q-args>, 1, 1, 1, "<bang>")
+      \ lua require("unleashed").ajob(<q-args>, 1, 1, 1, "<bang>")
 command -bar -nargs=? -complete=custom,<sid>LuamakeComplete StopJob
-      \ lua require("build").stop_job(<f-args>)
+      \ lua require("unleashed").stop_job(<f-args>)
 
 " Restore compatible options
 let &cpo = s:save_cpo
