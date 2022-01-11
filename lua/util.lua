@@ -2,11 +2,16 @@ local M = {}
 local api = vim.api
 
 M.echo_type = function(type, arg)
-  local msg = string.format([[
+  local msg = string.format(
+    [[
   echohl %s
   echomsg "%s(unleashed): %s"
   echohl NONE
- ]], type, string.sub(type, 1, 1), arg)
+ ]],
+    type,
+    string.sub(type, 1, 1),
+    arg
+  )
   api.nvim_command(msg)
 end
 

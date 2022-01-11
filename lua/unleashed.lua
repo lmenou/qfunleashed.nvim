@@ -1,11 +1,11 @@
 local fn, api = vim.fn, vim.api
-local Jobs = require"jobs"
-local util = require"util"
+local Jobs = require "jobs"
+local util = require "util"
 
 local M = {}
 
 local jobs = {}
-local jobs_list = setmetatable({}, {__index = jobs})
+local jobs_list = setmetatable({}, { __index = jobs })
 
 -- [[ FIND THE JOB TO ACT ON ]]
 function jobs:find_job(job_id)
@@ -15,8 +15,11 @@ function jobs:find_job(job_id)
     end
   end
 
-  util.echo_type("ErrorMsg", [[E(unleashed): No valid job_id 
-    found to handle the job]])
+  util.echo_type(
+    "ErrorMsg",
+    [[E(unleashed): No valid job_id 
+    found to handle the job]]
+  )
 end
 
 function jobs:find_type_job(loc, status)
@@ -70,7 +73,7 @@ local function handler(job_id, data, event)
     end
     if next(data) then
       for _, v in ipairs(data) do
-        job.data[#(job.data)+1] = v
+        job.data[#job.data + 1] = v
       end
     end
   end
@@ -106,7 +109,6 @@ end
 function M.stop_job(arg)
   local jobstop
 
-
   if tonumber(arg) ~= nil then
     local jobid = tonumber(arg)
     jobstop = fn.jobstop(jobid)
@@ -117,10 +119,8 @@ function M.stop_job(arg)
       local job = jobs_list:find_job(arg)
       job.stop_job = true
     end
-
   else
-
-    local valid_arg = {"quickfix", "location"}
+    local valid_arg = { "quickfix", "location" }
     local loc, is_valid = util.is_in_table(valid_arg, arg)
 
     if is_valid then
@@ -133,10 +133,7 @@ function M.stop_job(arg)
       for k, v in ipairs(type_job) do
         jobstop = fn.jobstop(v.jobid)
         if not jobstop then
-          local err = string.format(
-            "Provided jobid %s is not valid, failed to stop this job",
-            tostring(v.jobid)
-          )
+          local err = string.format("Provided jobid %s is not valid, failed to stop this job", tostring(v.jobid))
           util.echo_type("ErrorMsg", err)
         end
         type_job[k].stop_job = true
@@ -144,12 +141,10 @@ function M.stop_job(arg)
     else
       util.echo_type("ErrorMsg", "Provided argument is not valid, failed to stop the jobs")
     end
-
   end
 end
 
 function M.ajob(arg, grep, loc, add, bang)
-
   -- Define new job
   local t = Jobs:new()
 
@@ -169,7 +164,7 @@ function M.ajob(arg, grep, loc, add, bang)
     on_stdout = handler,
     on_exit = handler,
     stderr_buffered = false,
-    stdout_buffered = false
+    stdout_buffered = false,
   }
 
   api.nvim_command [[doautocmd QuickFixCmdPre]]
@@ -188,7 +183,7 @@ function M.ajob(arg, grep, loc, add, bang)
     t.jobid = fn.jobstart(t.makeprg, opts)
   end
 
-  jobs_list[#jobs_list+1] = t
+  jobs_list[#jobs_list + 1] = t
 end
 
 return M

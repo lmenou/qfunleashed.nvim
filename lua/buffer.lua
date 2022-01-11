@@ -4,7 +4,7 @@ local M = {}
 local create_buf = function()
   api.nvim_command [[topleft 20split UnleashedStatus]]
 
-  vim.bo.bufhidden = 'hide'
+  vim.bo.bufhidden = "hide"
   vim.bo.buflisted = true
   vim.bo.swapfile = false
 
@@ -16,16 +16,16 @@ local create_buf = function()
 end
 
 local buffer_wipe = function(bufnr)
-  api.nvim_buf_set_option(bufnr, 'modifiable', true)
-  api.nvim_buf_set_option(bufnr, 'readonly', false)
+  api.nvim_buf_set_option(bufnr, "modifiable", true)
+  api.nvim_buf_set_option(bufnr, "readonly", false)
   api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
 end
 
 local buffer_nonmodif = function(bufnr)
-  api.nvim_buf_set_option(bufnr, 'modifiable', false)
-  api.nvim_buf_set_option(bufnr, 'readonly', true)
-  api.nvim_buf_set_option(bufnr, 'modified', false)
-  api.nvim_buf_set_option(bufnr, 'buflisted', false)
+  api.nvim_buf_set_option(bufnr, "modifiable", false)
+  api.nvim_buf_set_option(bufnr, "readonly", true)
+  api.nvim_buf_set_option(bufnr, "modified", false)
+  api.nvim_buf_set_option(bufnr, "buflisted", false)
 end
 
 M.buf_set_lines = function()
