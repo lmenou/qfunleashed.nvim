@@ -7,7 +7,7 @@ local M = {}
 local jobs = {}
 local jobs_list = setmetatable({}, { __index = jobs })
 
--- [[ FIND THE JOB TO ACT ON ]]
+-- [[ JOBS HISTORY AND UTILITIES ]]
 function jobs:find_job(job_id)
   for _, v in ipairs(self) do
     if v.jobid == job_id then
@@ -40,7 +40,7 @@ function jobs:clean_job()
     end
   end
 
-  if count > 5 then
+  if count > 2 then
     for k, v in pairs(self) do
       if v.status == "Done" then
         table.remove(self, k)
@@ -92,7 +92,7 @@ local function handler(job_id, data, event)
         end
       else
         job:location_setter()
-        if job.first == true and job.data ~= nil then
+        if job.first == 1 and job.data ~= nil then
           api.nvim_command [[silent! lfirst]]
         end
         if vim.g.unleashed_build_quick_open == 1 then
@@ -105,6 +105,8 @@ local function handler(job_id, data, event)
     jobs_list:clean_job()
   end
 end
+
+-- [[ THE MODULE ITSELF ]]
 
 function M.stop_job(arg)
   local jobstop
@@ -145,7 +147,6 @@ function M.stop_job(arg)
 end
 
 function M.ajob(arg, grep, loc, add, bang)
-  -- Define new job
   local t = Jobs:new()
 
   t.loc = loc
