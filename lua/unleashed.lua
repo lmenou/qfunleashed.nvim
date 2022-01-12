@@ -9,9 +9,9 @@ local jobs_list = setmetatable({}, { __index = jobs })
 
 -- [[ JOBS HISTORY AND UTILITIES ]]
 function jobs:find_job(job_id)
-  for _, v in ipairs(self) do
+  for k, v in ipairs(self) do
     if v.jobid == job_id then
-      return v
+      return k, v
     end
   end
 
@@ -32,27 +32,13 @@ function jobs:find_type_job(loc, status)
   return type_job
 end
 
-function jobs:clean_job()
-  local count = 0
-  for _, v in pairs(self) do
-    if v.status == "Done" then
-      count = count + 1
-    end
-  end
-
-  if count > 2 then
-    for k, v in pairs(self) do
-      if v.status == "Done" then
-        table.remove(self, k)
-        break
-      end
-    end
-  end
+function jobs:clean_job(index)
+  table.remove(self, index)
 end
 
 -- [[ HANDLER ]]
 local function handler(job_id, data, event)
-  local job = jobs_list:find_job(job_id)
+  local index, job = jobs_list:find_job(job_id)
 
   if event == "stderr" then
     for k, v in ipairs(data) do
@@ -84,25 +70,15 @@ local function handler(job_id, data, event)
     else
       if job.loc == 0 then
         job:quickfix_setter()
-        if job.first == 1 and job.data ~= nil then
-          api.nvim_command [[silent! cfirst]]
-        end
-        if vim.g.unleashed_build_quick_open == 1 then
-          api.nvim_command [[copen | wincmd p]]
-        end
+        job:quickfix_out()
       else
         job:location_setter()
-        if job.first == 1 and job.data ~= nil then
-          api.nvim_command [[silent! lfirst]]
-        end
-        if vim.g.unleashed_build_quick_open == 1 then
-          api.nvim_command [[lopen | wincmd p]]
-        end
+        job:location_out()
       end
     end
     api.nvim_command [[doautocmd QuickFixCmdPost]]
     job.status = "Done"
-    jobs_list:clean_job()
+    jobs_list:clean_job(index)
   end
 end
 
