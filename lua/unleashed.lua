@@ -15,11 +15,7 @@ function jobs:find_job(job_id)
     end
   end
 
-  util.echo_type(
-    "ErrorMsg",
-    [[E(unleashed): No valid job_id 
-    found to handle the job]]
-  )
+  util.echo_type("ErrorMsg", "No valid job_id found to handle the job")
 end
 
 function jobs:find_type_job(loc, status)
