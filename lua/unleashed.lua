@@ -23,13 +23,20 @@ function jobs:find_job(job_id)
 end
 
 function jobs:find_type_job(loc, status)
-  local type_job = {}
-  for _, v in ipairs(self) do
-    if v.loc == loc - 1 and v.status == status then
-      table.insert(type_job, v)
+  local yes = loc < 3 and true or false
+  if yes then
+    for k, v in ipairs(self) do
+      if v.loc == loc - 1 and v.status == status then
+        self[k].to_stop = true
+      end
+    end
+  else
+    for k, v in ipairs(self) do
+      if v.status == status then
+        self[k].to_stop = true
+      end
     end
   end
-  return type_job
 end
 
 function jobs:clean_job(index)
@@ -86,39 +93,29 @@ end
 
 function M.stop_job(arg)
   local jobstop
+  local valid_arg = { "quickfix", "location", "all", "" }
+  local loc, valid = util.is_in_table(valid_arg, arg)
 
-  if tonumber(arg) ~= nil then
-    local jobid = tonumber(arg)
-    jobstop = fn.jobstop(jobid)
-    if jobstop == 0 then
-      util.echo_type("ErrorMsg", "Provided jobid is not valid, failed to stop the job")
-      return
-    else
-      local job = jobs_list:find_job(arg)
-      job.stop_job = true
+  if valid then
+    jobs_list:find_type_job(loc, "Running")
+    print(vim.inspect(jobs_list))
+
+    if not next(jobs_list) then
+      util.echo_type("WarningMsg", "Nothing is running here...")
     end
-  else
-    local valid_arg = { "quickfix", "location" }
-    local loc, is_valid = util.is_in_table(valid_arg, arg)
 
-    if is_valid then
-      local type_job = jobs_list:find_type_job(loc, "Running")
-      if not next(type_job) then
-        util.echo_type("WarningMsg", "No jobs are running here.")
-        return
-      end
-
-      for k, v in ipairs(type_job) do
+    for k, v in ipairs(jobs_list) do
+      if v.to_stop then
         jobstop = fn.jobstop(v.jobid)
         if not jobstop then
-          local err = string.format("Provided jobid %s is not valid, failed to stop this job", tostring(v.jobid))
-          util.echo_type("ErrorMsg", err)
+          local msg = string.format("Failed to stop the job %s", tostring(v.jobid))
+          util.echo_type("ErrorMsg", msg)
         end
-        type_job[k].stop_job = true
+        jobs_list[k].stop_job = true
       end
-    else
-      util.echo_type("ErrorMsg", "Provided argument is not valid, failed to stop the jobs")
     end
+  else
+    util.echo_type("ErrorMsg", "Given arg is not valid !")
   end
 end
 

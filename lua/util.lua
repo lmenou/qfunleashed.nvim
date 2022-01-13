@@ -16,11 +16,16 @@ M.echo_type = function(hlmode, arg)
 end
 
 M.is_in_table = function(t, arg)
-  for k, v in pairs(t) do
-    if v == arg then
-      return k, true
+  if arg == nil then
+    return 4, true
+  else
+    for k, v in pairs(t) do
+      if v == arg then
+        return k, true
+      end
     end
   end
+
   return nil, false
 end
 
