@@ -71,7 +71,8 @@ function Jobs:quickfix_out()
       api.nvim_command [[ silent copen | wincmd p ]]
     end
     msg = self.type == "grep" and "Grep succeeded !" or "Build failed..."
-    util.echo_type("MoreMsg", msg)
+    local hlmode = self.type == "grep" and "MoreMsg" or "WarningMsg"
+    util.echo_type(hlmode, msg)
   else
     msg = self.type == "grep" and "Grep empty !" or "Build succeeded !"
     util.echo_type("MoreMsg", msg)
@@ -88,7 +89,8 @@ function Jobs:location_out()
       api.nvim_command [[ silent lopen | wincmd p ]]
     end
     msg = self.type == "grep" and "Grep succeeded !" or "Build failed..."
-    util.echo_type("MoreMsg", msg)
+    local hlmode = self.type == "grep" and "MoreMsg" or "WarningMsg"
+    util.echo_type(hlmode, msg)
   else
     msg = self.type == "grep" and "Grep empty !" or "Build succeeded !"
     util.echo_type("MoreMsg", msg)
