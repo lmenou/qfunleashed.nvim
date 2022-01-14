@@ -29,6 +29,14 @@ M.is_in_table = function(t, arg)
   return nil, false
 end
 
+M.first_word = function(sentence, delimiter)
+  local result = {}
+  for match in (sentence .. delimiter):gmatch("(.-)" .. delimiter) do
+    table.insert(result, match)
+  end
+  return result[1]
+end
+
 return M
 
 -- lua: et tw=79 ts=2 sts=2 sw=2

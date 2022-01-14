@@ -63,6 +63,10 @@ end
 
 function Jobs:quickfix_out()
   local msg
+  if self.out_error then
+    return
+  end
+
   if self.data[1] ~= nil then
     if self.first == 1 then
       api.nvim_command [[ silent! cfirst ]]
@@ -81,6 +85,10 @@ end
 
 function Jobs:location_out()
   local msg
+  if self.out_error then
+    return
+  end
+
   if self.data[1] ~= nil then
     if self.first == 1 then
       api.nvim_command [[ silent! lfirst ]]
