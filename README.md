@@ -1,4 +1,4 @@
-# nvim-luamake  
+# nvim-luamake :gear:
 This is a simple plugin to use the vim `:make` and `:grep` command
 asynchronously in Neovim.
 
@@ -12,12 +12,12 @@ outdated.  Although I HATE to be linted in the face while I am coding and to
 see lints that I do not care about in my (ugly) code. Yes, configuration
 always bothers me.  Also, I like the `:make`, `:grep` commands.
 
-## Requirements 
+## Requirements :lock_with_ink_pen:
 - [Neovim 0.5](https://github.com/neovim/neovim)  
--  Some compilers  
--  Some "greppers"  
+- Some compilers  
+- Some "greppers"  
 
-## Installation 
+## Installation :incoming_envelope:
 With your favourite plugin manager, you can have a look at
 [packer.nvim](https://github.com/wbthomason/packer.nvim) or [vim
 plug](https://github.com/junegunn/vim-plug) or even use the native solution
@@ -44,14 +44,13 @@ If you miss something, it is possible to stop the current running job.
 - Run `:StopJob` to stop the running job.  
 
 If you wish to add other items to your current (quickfix or location) lists,
-simply add `Add` after the previous asynchronous quickfix commands (e.g.
-`:MakeAdd`, `:LgrepAdd`, etc).  
+simply add `Add` after the previous asynchronous grep commands (e.g.
+`:GrepAdd`, `:LgrepAdd`).  
 
 Use `:copen` to open the quickfix window. Use `:lopen` to open the location
 window. If you set `g:quick_copen` (See Configuration part), the quickfix (or
 location) window will open automatically with (provided the good errorformat)
-errors parsed. Otherwise, a message "Job is done." will be printed out. If you
-stop the job, a message "Job has been stopped." is shown.
+errors parsed.
 
 Please, feel free to read the help for further information.
 
@@ -59,14 +58,14 @@ Please, feel free to read the help for further information.
 In your `init.vim`, you can set:  `let g:quick_open = 1` to open the quickfix
 list (or location window) at the end of the running job.  
 
-## Contributing and Issues 
+## Contributing and Issues :thought_balloon:
 Please, feel free to let me know if you encounter an issue using this plugin
 (this is more likely to happen) or simply submit a PR (provided you decipher
 my hieroglyphs), I would be happy to discuss !
 
 If you feel brave or helpful, code review are more than welcome too !
 
-## License 
+## License :bookmark:
 This plugin is licensed under Apache 2.0 (same as Neovim). See the
 [LICENSE](https://github.com/lmenou/nvim-luamake/blob/master/LICENSE) file for
 more information.
