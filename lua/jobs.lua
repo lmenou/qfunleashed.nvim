@@ -42,7 +42,6 @@ function Jobs:quickfix_setter()
   end
 end
 
--- [[ OUTER FOR QUICKFIX LIST AND LOCATION LIST ]]
 function Jobs:location_setter()
   local opts = {}
   if self.type == "make" then
@@ -61,6 +60,7 @@ function Jobs:location_setter()
   end
 end
 
+-- [[ OUTER FOR QUICKFIX LIST AND LOCATION LIST ]]
 function Jobs:quickfix_out()
   local msg
   if self.out_error then
