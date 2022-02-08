@@ -56,19 +56,7 @@ end
 local function handler(job_id, data, event)
   local index, job = jobs_list:find_job(job_id)
 
-  if event == "stderr" then
-    for k, v in ipairs(data) do
-      if v == "" then
-        data[k] = nil
-      end
-    end
-    if next(data) then
-      util.echo_type("ErrorMsg", data[1])
-      job.out_error = true
-    end
-  end
-
-  if event == "stdout" then
+  if event == "stdout" or event == "stderr" then
     for k, v in ipairs(data) do
       if v == "" then
         data[k] = nil
