@@ -1,4 +1,4 @@
-# nvim-luamake :gear:
+# nvim-unleashed :gear:
 This is a simple plugin to use the vim `:make` and `:grep` command
 asynchronously in Neovim.
 
@@ -64,6 +64,9 @@ Please, feel free to let me know if you encounter an issue using this plugin
 my hieroglyphs), I would be happy to discuss !
 
 If you feel brave or helpful, code review are more than welcome too !
+
+*Note*: This plugin should work properly on a Unix like system, but I would love
+to have feedback from eventual Windows users.
 
 ## License :bookmark:
 This plugin is licensed under Apache 2.0 (same as Neovim). See the
