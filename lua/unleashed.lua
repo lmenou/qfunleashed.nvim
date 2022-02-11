@@ -18,7 +18,7 @@ function jobs:find_job(job_id)
   util.echo_type("ErrorMsg", "No valid job_id found to handle the job")
 end
 
-function jobs:find_type_job(loc, status)
+function jobs:find_job_to_stop(loc, status)
   local yes = loc < 3 and true or false
   if yes then
     for k, v in ipairs(self) do
@@ -95,7 +95,7 @@ function M.stop_job(arg)
   local loc, valid = util.is_in_table(valid_arg, arg)
 
   if valid then
-    jobs_list:find_type_job(loc, "Running")
+    jobs_list:find_job_to_stop(loc, "Running")
 
     if not next(jobs_list) then
       util.echo_type("WarningMsg", "Nothing is running here...")
