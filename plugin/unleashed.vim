@@ -8,13 +8,6 @@ let g:loaded_unleashed = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-
-" Function for completion on command line
-function! s:LuamakeComplete(arglead, cmdline, cursorpos)
-  let l:list = "location\nquickfix"
-  return l:list
-endfunction
-
 " Wish to see the quickfix list or not ?
 " Set the global value
 if !exists('g:unleashed_build_quick_open')
@@ -37,7 +30,7 @@ command! -bang -bar -nargs=+ -complete=file GrepAdd
       \ lua require("unleashed").ajob(<q-args>, 1, 0, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file LgrepAdd
       \ lua require("unleashed").ajob(<q-args>, 1, 1, 1, "<bang>")
-command -bar -nargs=? -complete=custom,<sid>LuamakeComplete StopJob
+command -bar -nargs=? -complete=custom,stopcmd#arg StopJob
       \ lua require("unleashed").stop_job(<f-args>)
 
 " Restore compatible options
