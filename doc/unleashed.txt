@@ -101,8 +101,7 @@ g:quick_open			If this global value is set to 1 (Default 0)
 				in your |init.vim|, then the quickfix list
 				(respectively, the location list if a local
 				asynchronous job was launched) is opened at
-				the end of the asynchronous job. Else, "Job is
-				done." is printed in the command line.
+				the end of the asynchronous job.
 
 ============================================================================
 3. About the plugin				*unleashed-about*
