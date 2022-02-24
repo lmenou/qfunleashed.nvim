@@ -16,12 +16,15 @@ end
 
 command! -bang -bar -nargs=* -complete=file Make 
       \ lua require("unleashed").ajob(<q-args>, 0, 0, 0, "<bang>")
-command! -bang -bar -nargs=* -complete=file Lmake 
+command! -bang -bar -nargs=* -complete=file Lmake
       \ lua require("unleashed").ajob(<q-args>, 0, 1, 0, "<bang>")
-command! -bang -bar -nargs=* -complete=file MakeAdd
-      \ lua require("unleashed").ajob(<q-args>, 0, 0, 1, "<bang>")
-command! -bang -bar -nargs=* -complete=file LmakeAdd
-      \ lua require("unleashed").ajob(<q-args>, 0, 1, 1, "<bang>")
+
+" NOTE: Possible but perhaps useless
+" command! -bang -bar -nargs=* -complete=file MakeAdd
+"       \ lua require("unleashed").ajob(<q-args>, 0, 0, 1, "<bang>")
+" command! -bang -bar -nargs=* -complete=file LmakeAdd
+"       \ lua require("unleashed").ajob(<q-args>, 0, 1, 1, "<bang>")
+
 command! -bang -bar -nargs=+ -complete=file Grep 
       \ lua require("unleashed").ajob(<q-args>, 1, 0, 0, "<bang>")
 command! -bang -bar -nargs=+ -complete=file Lgrep 
