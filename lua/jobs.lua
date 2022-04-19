@@ -20,7 +20,12 @@ end
 function Jobs:get_grepprg(arg)
   local grepprg = vim.o.grepprg
 
-  self.grepprg = fn.expandcmd(grepprg .. " " .. arg)
+  if string.find(grepprg, "%$%*") then
+    grepprg = string.gsub(grepprg, "%$%*", arg)
+  else
+    grepprg = grepprg .. " " .. arg
+  end
+  self.grepprg = fn.expandcmd(grepprg)
 end
 
 -- [[ SETTER FOR QUICKFIX AND LOCATION LIST ]]
