@@ -1,4 +1,4 @@
-# nvim-unleashed :gear:
+# qfunleashed.nvim :gear:
 This is a simple plugin to use the vim `:make` and `:grep` command
 asynchronously in Neovim.
 
@@ -43,20 +43,21 @@ It is also possible to set a grepper (See `:help :grep` and `:help 'grepformat'`
 If you miss something, it is possible to stop the current running job.  
 - Run `:StopJob` to stop the running job.  
 
-If you wish to add other items to your current (quickfix or location) lists,
-simply add `Add` after the previous asynchronous grep commands (e.g.
-`:GrepAdd`, `:LgrepAdd`).  
+If you wish to add other items to your current (quickfix or location) lists
+after a grep, simply add `Add` after the previous asynchronous grep commands
+(e.g. `:GrepAdd`, `:LgrepAdd`).  
 
 Use `:copen` to open the quickfix window. Use `:lopen` to open the location
-window. If you set `g:quick_copen` (See Configuration part), the quickfix (or
+window. If you set `g:qfunleashed_quick_open` (See Configuration part), the quickfix (or
 location) window will open automatically with (provided the good errorformat)
 errors parsed.
 
 Please, feel free to read the help for further information.
 
 ## Configuration
-In your `init.vim`, you can set:  `let g:quick_open = 1` to open the quickfix
-list (or location window) at the end of the running job.  
+In your `init.vim`, you can set:  
+`let g:qfunleashed_quick_open = 1`
+to open the quickfix list (or location window) at the end of the running job.  
 
 ## Contributing and Issues :thought_balloon:
 Please, feel free to let me know if you encounter an issue using this plugin
@@ -66,7 +67,7 @@ my hieroglyphs), I would be happy to discuss !
 If you feel brave or helpful, code review are more than welcome too !
 
 *Note*: This plugin should work properly on a Unix like system, but I would love
-to have feedback from eventual Windows users.
+to get some help from Windows users.
 
 ## License :bookmark:
 This plugin is licensed under Apache 2.0 (same as Neovim). See the

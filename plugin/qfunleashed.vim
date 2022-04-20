@@ -1,8 +1,8 @@
 " Prevent to load twice
-if exists('g:loaded_unleashed')
+if exists('g:loaded_qfunleashed')
   finish
 endif
-let g:loaded_unleashed = 1
+let g:loaded_qfunleashed = 1
 
 " Save user compatible options
 let s:save_cpo = &cpo
@@ -10,8 +10,8 @@ set cpo&vim
 
 " Wish to see the quickfix list or not ?
 " Set the global value
-if !exists('g:unleashed_build_quick_open')
-  let g:unleashed_build_quick_open = 0
+if !exists('g:qfunleashed_quick_open')
+  let g:qfunleashed_quick_open = 0
 end
 
 command! -bang -bar -nargs=* -complete=file Make 

@@ -1,25 +1,25 @@
-*unleashed.txt*   Asynchronous make and grep for neovim
+*qfunleashed.txt*   Asynchronous make and grep for neovim
 
 Author: lmenou
 License: Apache 2.0 (See LICENSE file for details)
 
-				*unleashed* - *nvim-unleashed*
+				*qfunleashed* - *qfunleashed.nvim*
 
 This is a minimal and simple plugin written in lua rending possible an
 asynchronous |:make| and |:grep| in neovim. With this plugin, let us hope you
 will enjoy linting and building your project/code without freezing your
 favourite editor.
 
-1. Usage - Commands				|unleashed-commands|
-2. Configuration				|unleashed-configuration|
-3. About the plugin				|unleashed-about|
+1. Usage - Commands				|qfunleashed-commands|
+2. Configuration				|qfunleashed-configuration|
+3. About the plugin				|qfunleashed-about|
 
 Requirement: Neovim 0.5
 
 ============================================================================
-1. Usage - Commands				*unleashed-commands*
+1. Usage - Commands				*qfunleashed-commands*
 
-				*unleashed-Make* *:Make*
+				*qfunleashed-Make* *:Make*
 Make[!] [{filename}]		Start an asynchronous |:make| on the specified
 				buffer and fill the |quickfix| list. A
 				|'makeprg'| and an |'errorformat'| must be set
@@ -33,22 +33,12 @@ Make[!] [{filename}]		Start an asynchronous |:make| on the specified
 				command line (%, #, #n, ...) shall be
 				supported (|cmdline-special|).
 
-				*unleashed-MakeAdd* *:MakeAdd*
-MakeAdd[!] [{filename}]	        Works as |:Make| except that items generated
-				by the job are appended to the current
-				|quickfix| list.
-
-				*unleashed-Lmake* *:Lmake*
+				*qfunleashed-Lmake* *:Lmake*
 Lmake[!] [{filename}]		Works as |:Make| except that the
 				|location-list| is populated with errors
 				instead of the |quickfix| list
 
-				*unleashed-LmakeAdd* *:LmakeAdd*
-LmakeAdd[!] [{filename}]	Works as |:Lmake| except that items generated
-				by the job are appended to the current
-				|location-list|.
-
-				*unleashed-Grep* *:Grep*
+				*qfunleashed-Grep* *:Grep*
 Grep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
 				directory or file and fill the |quickfix| list
 				asynchronously. A |'grepprg'| and a
@@ -62,22 +52,22 @@ Grep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
 				characters in the command line (%, #, #n, ...)
 				shall be supported (|cmdline-special|).
 
-				*unleashed-GrepAdd* *:GrepAdd*
+				*qfunleashed-GrepAdd* *:GrepAdd*
 GrepAdd[!] [{filename}]	        Works as |:Grep| except that items generated
 				by the job are appended to the current
 				|quickfix| list.
 
-				*unleashed-Lgrep* *:Lgrep*
+				*qfunleashed-Lgrep* *:Lgrep*
 Lgrep[!] [{options} {args}]	Works as |:Grep| except that the
 				|location-list| is populated with findings
 				instead of the |quickfix| list.
 
-				*unleashed-LgrepAdd* *:LgrepAdd*
+				*qfunleashed-LgrepAdd* *:LgrepAdd*
 LgrepAdd[!] [{filename}]	Works as |:Lgrep| except that items generated
 				by the job are appended to the current
 				|location-list|.
 
-				*unleashed-StopJob* *:StopJob*
+				*qfunleashed-StopJob* *:StopJob*
 StopJob [{arg}]			The plugin supports double-job handling. You
 				can launch two asynchronous jobs, one filling the
 				|quickfix| list and the other filling the
@@ -94,22 +84,26 @@ StopJob [{arg}]			The plugin supports double-job handling. You
                                 type, completion for those words is provided.
 
 ============================================================================
-2. Configuration				*unleashed-configuration*
+2. Configuration				*qfunleashed-configuration*
 
-				*unleashed-g:quick_open* *g:quick_open*
-g:quick_open			If this global value is set to 1 (Default 0)
-				in your |init.vim|, then the quickfix list
+				*qfunleashed-g:qfunleashed_quick_open* 
+                                *g:qfunleashed_quick_open*
+g:qfunleashed_quick_open	If this global value is set to 1 (Default 0)
+				in your |init.vim| or |init.lua|, then the quickfix list
 				(respectively, the location list if a local
 				asynchronous job was launched) is opened at
-				the end of the asynchronous job.
+				the end of the asynchronous job. If the latter
+                                opening is useless because the lists are empty,
+                                they are closed or kept closed. In other words,
+                                the lists are automatically managed.
 
 ============================================================================
-3. About the plugin				*unleashed-about*
+3. About the plugin				*qfunleashed-about*
 
-The plugin is at an early stage, if you encounter an issue (this is more
-likely to happen), feel free to open it at
-https://github.com/lmenou/nvim-unleashed/issues. Otherwise, pull requests are
-more than welcome as well at https://github.com/lmenou/nvim-unleashed/pulls.
+The plugin is at an early stage, if you encounter an issue (this is more likely
+to happen), feel free to open it at
+https://github.com/lmenou/qfunleashed.nvim/issues. Otherwise, pull requests are
+more than welcome as well at https://github.com/lmenou/qfunleashed.nvim/pulls.
 
 Philosophy of the plugin: This plugin aims at being as minimal as possible. It
 does not (and will not) provide embedded linting in the buffer but rather use
@@ -123,4 +117,4 @@ https://github.com/mfussenegger/nvim-lint.
 
 Thanks for testing/using this plugin.
 
-vim:tw=78:ts=8:ft=help:norl:
+  vim:tw=79:ts=8:ft=help:norl:

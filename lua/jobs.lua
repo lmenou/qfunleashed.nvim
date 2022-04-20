@@ -73,14 +73,14 @@ function Jobs:quickfix_out()
     if self.first == 1 then
       api.nvim_command [[ silent! cfirst ]]
     end
-    if vim.g.unleashed_build_quick_open == 1 then
+    if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent copen | wincmd p ]]
     end
     msg = self.type == "grep" and "Grep succeeded !" or "Build failed..."
     local hlmode = self.type == "grep" and "MoreMsg" or "WarningMsg"
     util.echo_type(hlmode, msg)
   else
-    if vim.g.unleashed_build_quick_open == 1 then
+    if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent! cclose ]]
     end
     msg = self.type == "grep" and "Grep empty !" or "Build succeeded !"
@@ -95,14 +95,14 @@ function Jobs:location_out()
     if self.first == 1 then
       api.nvim_command [[ silent! lfirst ]]
     end
-    if vim.g.unleashed_build_quick_open == 1 then
+    if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent lopen | wincmd p ]]
     end
     msg = self.type == "grep" and "Grep succeeded !" or "Build failed..."
     local hlmode = self.type == "grep" and "MoreMsg" or "WarningMsg"
     util.echo_type(hlmode, msg)
   else
-    if vim.g.unleashed_build_quick_open == 1 then
+    if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent! lclose ]]
     end
     msg = self.type == "grep" and "Grep empty !" or "Build succeeded !"
