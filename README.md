@@ -2,7 +2,7 @@
 This is a simple plugin to use the vim `:make` and `:grep` command
 asynchronously in Neovim.
 
-If you do not know what those commmands are/do, I highly suggest you to type
+If you do not know what those commands are/do, I highly suggest you to type
 `:help quickfix<CR>`, Vim/Neovim's compiler system is a reason to simply stick
 with them to edit your amazing pieces of codes.
 
