@@ -1,6 +1,6 @@
 local fn, api = vim.fn, vim.api
-local Jobs = require "jobs"
-local util = require "util"
+local Jobs = require "unleashed.jobs"
+local util = require "unleashed"
 
 local M = {}
 

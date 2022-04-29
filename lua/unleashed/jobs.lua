@@ -1,4 +1,4 @@
-local util = require "util"
+local util = require "unleashed"
 local fn, api = vim.fn, vim.api
 
 local Jobs = {}

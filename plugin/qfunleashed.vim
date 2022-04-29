@@ -15,26 +15,26 @@ if !exists('g:qfunleashed_quick_open')
 end
 
 command! -bang -bar -nargs=* -complete=file Make 
-      \ lua require("unleashed").ajob(<q-args>, 0, 0, 0, "<bang>")
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 0, 0, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file Lmake
-      \ lua require("unleashed").ajob(<q-args>, 0, 1, 0, "<bang>")
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 0, 1, 0, "<bang>")
 
 " NOTE: Possible but perhaps useless
 " command! -bang -bar -nargs=* -complete=file MakeAdd
-"       \ lua require("unleashed").ajob(<q-args>, 0, 0, 1, "<bang>")
+"       \ lua require("unleashed.unleashed").ajob(<q-args>, 0, 0, 1, "<bang>")
 " command! -bang -bar -nargs=* -complete=file LmakeAdd
-"       \ lua require("unleashed").ajob(<q-args>, 0, 1, 1, "<bang>")
+"       \ lua require("unleashed.unleashed").ajob(<q-args>, 0, 1, 1, "<bang>")
 
 command! -bang -bar -nargs=+ -complete=file Grep 
-      \ lua require("unleashed").ajob(<q-args>, 1, 0, 0, "<bang>")
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 1, 0, 0, "<bang>")
 command! -bang -bar -nargs=+ -complete=file Lgrep 
-      \ lua require("unleashed").ajob(<q-args>, 1, 1, 0, "<bang>")
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 1, 1, 0, "<bang>")
 command! -bang -bar -nargs=+ -complete=file GrepAdd
-      \ lua require("unleashed").ajob(<q-args>, 1, 0, 1, "<bang>")
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 1, 0, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file LgrepAdd
-      \ lua require("unleashed").ajob(<q-args>, 1, 1, 1, "<bang>")
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 1, 1, 1, "<bang>")
 command -bar -nargs=? -complete=custom,stopcmd#arg StopJob
-      \ lua require("unleashed").stop_job(<f-args>)
+      \ lua require("unleashed.unleashed").stop_job(<f-args>)
 
 " Restore compatible options
 let &cpo = s:save_cpo
