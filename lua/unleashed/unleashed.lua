@@ -57,16 +57,7 @@ local function handler(job_id, data, event)
   local index, job = jobs_list:find_job(job_id)
 
   if event == "stdout" or event == "stderr" then
-    for k, v in ipairs(data) do
-      if v == "" then
-        data[k] = nil
-      end
-    end
-    if next(data) then
-      for _, v in ipairs(data) do
-        job.data[#job.data + 1] = v
-      end
-    end
+    job:write_lines(data)
   end
 
   if event == "exit" then
@@ -83,6 +74,7 @@ local function handler(job_id, data, event)
     end
     api.nvim_command [[doautocmd QuickFixCmdPost]]
     job.status = "Done"
+    api.nvim_buf_delete(job.scratch_buf_id, { force = true, unload = false })
     jobs_list:clean_job(index)
   end
 end
@@ -135,6 +127,7 @@ function M.ajob(arg, grep, loc, add, bang)
   t.adding = add
   t.data = {}
 
+  -- TODO: check stedout_buffered
   local opts = {
     on_stderr = handler,
     on_stdout = handler,
@@ -159,6 +152,7 @@ function M.ajob(arg, grep, loc, add, bang)
     t.jobid = fn.jobstart(t.makeprg, opts)
   end
 
+  t:create_buffer()
   jobs_list[#jobs_list + 1] = t
 end
 

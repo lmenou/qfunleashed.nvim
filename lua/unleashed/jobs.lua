@@ -38,7 +38,8 @@ function Jobs:quickfix_setter()
     opts.title = self.grepprg
     opts.efm = self.grepformat
   end
-  opts.lines = self.data
+  opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -2, false)
+  if opts.lines[1] ~= "" then self.non_nil = 1 end
   if self.adding == 0 then
     fn.setqflist({}, " ", opts)
   else
@@ -56,7 +57,8 @@ function Jobs:location_setter()
     opts.title = self.grepprg
     opts.efm = self.grepformat
   end
-  opts.lines = self.data
+  opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -1, false)
+  if opts.lines[1] ~= "" then self.non_nil = 1 end
   if self.adding == 0 then
     fn.setloclist(0, {}, " ", opts)
   else
@@ -69,7 +71,7 @@ end
 function Jobs:quickfix_out()
   local msg
 
-  if self.data[1] ~= nil then
+  if self.non_nil ~= nil then
     if self.first == 1 then
       api.nvim_command [[ silent! cfirst ]]
     end
@@ -91,7 +93,7 @@ end
 function Jobs:location_out()
   local msg
 
-  if self.data[1] ~= nil then
+  if self.non_nil ~= nil then
     if self.first == 1 then
       api.nvim_command [[ silent! lfirst ]]
     end
@@ -108,6 +110,16 @@ function Jobs:location_out()
     msg = self.type == "grep" and "Grep empty !" or "Build succeeded !"
     util.echo_type("MoreMsg", msg)
   end
+end
+
+function Jobs:create_buffer()
+  local scratch_buf_id = api.nvim_create_buf(false, true)
+  self.scratch_buf_id = scratch_buf_id
+end
+
+function Jobs:write_lines(data)
+  local buf_id = self.scratch_buf_id
+  api.nvim_buf_set_lines(buf_id, -2, -1, false, data)
 end
 
 return Jobs
