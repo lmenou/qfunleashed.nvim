@@ -28,8 +28,8 @@ Make[!] [{filename}]		Start an asynchronous |:make| on the specified
 				make, appended to the |'makeprg'| if
 				necessary. |QuickFixCmdPre| and
 				|QuickFixCmdPost| should work as expected. If
-                                a bang [!] modifier is added, the first error
-                                is not jumped to. Special characters in the
+				a bang [!] modifier is added, the first error
+				is not jumped to. Special characters in the
 				command line (%, #, #n, ...) shall be
 				supported (|cmdline-special|).
 
@@ -53,7 +53,7 @@ Grep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
 				shall be supported (|cmdline-special|).
 
 				*qfunleashed-GrepAdd* *:GrepAdd*
-GrepAdd[!] [{filename}]	        Works as |:Grep| except that items generated
+GrepAdd[!] [{filename}]		Works as |:Grep| except that items generated
 				by the job are appended to the current
 				|quickfix| list.
 
@@ -76,26 +76,26 @@ StopJob [{arg}]			The plugin supports double-job handling. You
 				not provided, all the running jobs will be
 				stopped.
 
-                                {arg} must be a word of the following list:
-                                "quickfix", "location" or "all". Each word
-                                stop the job which operates on the respective
-                                list-name. "all" operates as if there were no
-                                arguments given. As those words are long to
-                                type, completion for those words is provided.
+				{arg} must be a word of the following list:
+				"quickfix", "location" or "all". Each word
+				stop the job which operates on the respective
+				list-name. "all" operates as if there were no
+				arguments given. As those words are long to
+				type, completion for those words is provided.
 
 ============================================================================
 2. Configuration				*qfunleashed-configuration*
 
 				*qfunleashed-g:qfunleashed_quick_open* 
-                                *g:qfunleashed_quick_open*
+				*g:qfunleashed_quick_open*
 g:qfunleashed_quick_open	If this global value is set to 1 (Default 0)
 				in your |init.vim| or |init.lua|, then the quickfix list
 				(respectively, the location list if a local
 				asynchronous job was launched) is opened at
 				the end of the asynchronous job. If the latter
-                                opening is useless because the lists are empty,
-                                they are closed or kept closed. In other words,
-                                the lists are automatically managed.
+				opening is useless because the lists are empty,
+				they are closed or kept closed. In other words,
+				the lists are automatically managed.
 
 ============================================================================
 3. About the plugin				*qfunleashed-about*
