@@ -14,6 +14,12 @@ if !exists('g:qfunleashed_quick_open')
   let g:qfunleashed_quick_open = 0
 end
 
+" Wish to see the job window or not ?
+" Set the global value
+if !exists('g:qfunleashed_quick_window')
+  let g:qfunleashed_quick_window = 0
+end
+
 command! -bang -bar -nargs=* -complete=file Make 
       \ lua require("unleashed.unleashed").ajob(<q-args>, 0, 0, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file Lmake

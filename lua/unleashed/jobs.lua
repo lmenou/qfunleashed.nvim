@@ -126,8 +126,9 @@ function Jobs:create_window()
   api.nvim_command("20split")
   local win_id = fn.win_getid()
   api.nvim_command("wincmd p")
-  self.win_id = win_id
+  api.nvim_win_set_option(win_id, 'winfixheight', true)
   api.nvim_win_set_buf(win_id, self.scratch_buf_id)
+  self.win_id = win_id
 end
 
 return Jobs

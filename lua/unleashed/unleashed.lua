@@ -74,7 +74,9 @@ local function handler(job_id, data, event)
     end
     api.nvim_command [[doautocmd QuickFixCmdPost]]
     job.status = "Done"
-    api.nvim_win_close(job.win_id, true)
+    if vim.g.qfunleashed_quick_window == 1 then
+      api.nvim_win_close(job.win_id, true)
+    end
     api.nvim_buf_delete(job.scratch_buf_id, { force = true, unload = false })
     jobs_list:clean_job(index)
   end
@@ -153,7 +155,9 @@ function M.ajob(arg, grep, loc, add, bang)
   end
 
   t:create_buffer()
-  t:create_window()
+  if vim.g.qfunleashed_quick_window == 1 then
+    t:create_window()
+  end
   jobs_list[#jobs_list + 1] = t
 end
 
