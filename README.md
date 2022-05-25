@@ -59,6 +59,10 @@ In your `init.vim`, you can set:
 `let g:qfunleashed_quick_open = 1`
 to open the quickfix list (or location window) at the end of the running job.  
 
+It is also possible to set:  
+`let g:qfunleashed_quick_window = 1`
+to open a window showing the output of the job while it is running.  
+
 ## Contributing and Issues :thought_balloon:
 Please, feel free to let me know if you encounter an issue using this plugin
 (this is more likely to happen) or simply submit a PR (provided you decipher

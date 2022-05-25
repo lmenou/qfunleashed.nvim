@@ -3,102 +3,109 @@
 Author: lmenou
 License: Apache 2.0 (See LICENSE file for details)
 
-				*qfunleashed* - *qfunleashed.nvim*
+                                *qfunleashed* - *qfunleashed.nvim*
 
 This is a minimal and simple plugin written in lua rending possible an
 asynchronous |:make| and |:grep| in neovim. With this plugin, let us hope you
 will enjoy linting and building your project/code without freezing your
 favourite editor.
 
-1. Usage - Commands				|qfunleashed-commands|
-2. Configuration				|qfunleashed-configuration|
-3. About the plugin				|qfunleashed-about|
+1. Usage - Commands                             |qfunleashed-commands|
+2. Configuration                                |qfunleashed-configuration|
+3. About the plugin                             |qfunleashed-about|
 
 Requirement: Neovim 0.5
 
 ============================================================================
-1. Usage - Commands				*qfunleashed-commands*
+1. Usage - Commands                             *qfunleashed-commands*
 
-				*qfunleashed-Make* *:Make*
-Make[!] [{filename}]		Start an asynchronous |:make| on the specified
-				buffer and fill the |quickfix| list. A
-				|'makeprg'| and an |'errorformat'| must be set
-				before running the command. {filename}
-				(optional) is the name of the file you wish to
-				make, appended to the |'makeprg'| if
-				necessary. |QuickFixCmdPre| and
-				|QuickFixCmdPost| should work as expected. If
-				a bang [!] modifier is added, the first error
-				is not jumped to. Special characters in the
-				command line (%, #, #n, ...) shall be
-				supported (|cmdline-special|).
+                                *qfunleashed-Make* *:Make*
+Make[!] [{filename}]            Start an asynchronous |:make| on the specified
+                                buffer and fill the |quickfix| list. A
+                                |'makeprg'| and an |'errorformat'| must be set
+                                before running the command. {filename}
+                                (optional) is the name of the file you wish to
+                                make, appended to the |'makeprg'| if
+                                necessary. |QuickFixCmdPre| and
+                                |QuickFixCmdPost| should work as expected. If
+                                a bang [!] modifier is added, the first error
+                                is not jumped to. Special characters in the
+                                command line (%, #, #n, ...) shall be
+                                supported (|cmdline-special|).
 
-				*qfunleashed-Lmake* *:Lmake*
-Lmake[!] [{filename}]		Works as |:Make| except that the
-				|location-list| is populated with errors
-				instead of the |quickfix| list
+                                *qfunleashed-Lmake* *:Lmake*
+Lmake[!] [{filename}]           Works as |:Make| except that the
+                                |location-list| is populated with errors
+                                instead of the |quickfix| list
 
-				*qfunleashed-Grep* *:Grep*
-Grep[!] [{options} {args}]	Start an asynchronous |:grep| on the specified
-				directory or file and fill the |quickfix| list
-				asynchronously. A |'grepprg'| and a
-				|'grepformat'| must be set before running the
-				command. {options} and {args} are specific
-				arguments that depends on your chosen
-				|'grepprg'| and must be given if necessary.
-				|QuickFixCmdPre| and |QuickFixCmdPost| should
-				work as expected. If a bang [!] modifier is
-				added, the first find is not jumped to. Special
-				characters in the command line (%, #, #n, ...)
-				shall be supported (|cmdline-special|).
+                                *qfunleashed-Grep* *:Grep*
+Grep[!] [{options} {args}]      Start an asynchronous |:grep| on the specified
+                                directory or file and fill the |quickfix| list
+                                asynchronously. A |'grepprg'| and a
+                                |'grepformat'| must be set before running the
+                                command. {options} and {args} are specific
+                                arguments that depends on your chosen
+                                |'grepprg'| and must be given if necessary.
+                                |QuickFixCmdPre| and |QuickFixCmdPost| should
+                                work as expected. If a bang [!] modifier is
+                                added, the first find is not jumped to. Special
+                                characters in the command line (%, #, #n, ...)
+                                shall be supported (|cmdline-special|).
 
-				*qfunleashed-GrepAdd* *:GrepAdd*
-GrepAdd[!] [{filename}]		Works as |:Grep| except that items generated
-				by the job are appended to the current
-				|quickfix| list.
+                                *qfunleashed-GrepAdd* *:GrepAdd*
+GrepAdd[!] [{filename}]         Works as |:Grep| except that items generated
+                                by the job are appended to the current
+                                |quickfix| list.
 
-				*qfunleashed-Lgrep* *:Lgrep*
-Lgrep[!] [{options} {args}]	Works as |:Grep| except that the
-				|location-list| is populated with findings
-				instead of the |quickfix| list.
+                                *qfunleashed-Lgrep* *:Lgrep*
+Lgrep[!] [{options} {args}]     Works as |:Grep| except that the
+                                |location-list| is populated with findings
+                                instead of the |quickfix| list.
 
-				*qfunleashed-LgrepAdd* *:LgrepAdd*
-LgrepAdd[!] [{filename}]	Works as |:Lgrep| except that items generated
-				by the job are appended to the current
-				|location-list|.
+                                *qfunleashed-LgrepAdd* *:LgrepAdd*
+LgrepAdd[!] [{filename}]        Works as |:Lgrep| except that items generated
+                                by the job are appended to the current
+                                |location-list|.
 
-				*qfunleashed-StopJob* *:StopJob*
-StopJob [{arg}]			The plugin supports double-job handling. You
-				can launch two asynchronous jobs, one filling the
-				|quickfix| list and the other filling the
-				|location-list|. |StopJob| provides a granular
-				control over the submitted jobs. If {arg} is
-				not provided, all the running jobs will be
-				stopped.
+                                *qfunleashed-StopJob* *:StopJob*
+StopJob [{arg}]                 The plugin supports double-job handling. You
+                                can launch two asynchronous jobs, one filling the
+                                |quickfix| list and the other filling the
+                                |location-list|. |StopJob| provides a granular
+                                control over the submitted jobs. If {arg} is
+                                not provided, all the running jobs will be
+                                stopped.
 
-				{arg} must be a word of the following list:
-				"quickfix", "location" or "all". Each word
-				stop the job which operates on the respective
-				list-name. "all" operates as if there were no
-				arguments given. As those words are long to
-				type, completion for those words is provided.
-
-============================================================================
-2. Configuration				*qfunleashed-configuration*
-
-				*qfunleashed-g:qfunleashed_quick_open* 
-				*g:qfunleashed_quick_open*
-g:qfunleashed_quick_open	If this global value is set to 1 (Default 0)
-				in your |init.vim| or |init.lua|, then the quickfix list
-				(respectively, the location list if a local
-				asynchronous job was launched) is opened at
-				the end of the asynchronous job. If the latter
-				opening is useless because the lists are empty,
-				they are closed or kept closed. In other words,
-				the lists are automatically managed.
+                                {arg} must be a word of the following list:
+                                "quickfix", "location" or "all". Each word
+                                stop the job which operates on the respective
+                                list-name. "all" operates as if there were no
+                                arguments given. As those words are long to
+                                type, completion for those words is provided.
 
 ============================================================================
-3. About the plugin				*qfunleashed-about*
+2. Configuration                                *qfunleashed-configuration*
+
+                                *qfunleashed-g:qfunleashed_quick_open* 
+                                *g:qfunleashed_quick_open*
+g:qfunleashed_quick_open        If this global value is set to 1 (Default 0)
+                                in your |init.vim| or |init.lua|, then the quickfix list
+                                (respectively, the location list if a local
+                                asynchronous job was launched) is opened at
+                                the end of the asynchronous job. If the latter
+                                opening is useless because the lists are empty,
+                                they are closed or kept closed. In other words,
+                                the lists are automatically managed.
+
+                                *qfunleashed-g:qfunleashed_quick_window* 
+                                *g:qfunleashed_quick_window*
+g:qfunleashed_quick_window      If this global value is set to 1 (Default 0)
+                                in your |init.vim| or |init.lua|, then while a
+                                job is running a window showing the
+                                output will be open at the top.
+
+============================================================================
+3. About the plugin                             *qfunleashed-about*
 
 The plugin is at an early stage, if you encounter an issue (this is more likely
 to happen), feel free to open it at
