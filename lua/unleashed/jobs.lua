@@ -118,12 +118,18 @@ end
 
 function Jobs:create_buffer()
   local scratch_buf_id = api.nvim_create_buf(false, true)
+  api.nvim_buf_set_option(scratch_buf_id, "modifiable", false)
+  api.nvim_buf_set_option(scratch_buf_id, "readonly", true)
   self.scratch_buf_id = scratch_buf_id
 end
 
 function Jobs:write_lines(data)
   local buf_id = self.scratch_buf_id
+  api.nvim_buf_set_option(buf_id, "modifiable", true)
+  api.nvim_buf_set_option(buf_id, "readonly", false)
   api.nvim_buf_set_lines(buf_id, -2, -1, false, data)
+  api.nvim_buf_set_option(buf_id, "modifiable", false)
+  api.nvim_buf_set_option(buf_id, "readonly", true)
 end
 
 function Jobs:create_window()
