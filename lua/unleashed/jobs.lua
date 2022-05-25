@@ -39,7 +39,9 @@ function Jobs:quickfix_setter()
     opts.efm = self.grepformat
   end
   opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -2, false)
-  if opts.lines[1] then self.non_nil = 1 end
+  if opts.lines[1] and opts.lines[1] ~= "" then
+    self.non_nil = 1
+  end
   if self.adding == 0 then
     fn.setqflist({}, " ", opts)
   else
@@ -58,7 +60,9 @@ function Jobs:location_setter()
     opts.efm = self.grepformat
   end
   opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -2, false)
-  if opts.lines[1] then self.non_nil = 1 end
+  if opts.lines[1] and opts.lines[1] ~= "" then
+    self.non_nil = 1
+  end
   if self.adding == 0 then
     fn.setloclist(0, {}, " ", opts)
   else
@@ -123,10 +127,10 @@ function Jobs:write_lines(data)
 end
 
 function Jobs:create_window()
-  api.nvim_command("20split")
+  api.nvim_command "20split"
   local win_id = fn.win_getid()
-  api.nvim_command("wincmd p")
-  api.nvim_win_set_option(win_id, 'winfixheight', true)
+  api.nvim_command "wincmd p"
+  api.nvim_win_set_option(win_id, "winfixheight", true)
   api.nvim_win_set_buf(win_id, self.scratch_buf_id)
   self.win_id = win_id
 end
