@@ -11,10 +11,12 @@ function Jobs:new(t)
 end
 
 -- [[ GET THE ASYNC PRG PROPERTIES ]]
+-- NOTE: It seems that the expansion is already taken care of
 function Jobs:get_makeprg(arg)
   local makeprg = vim.o.makeprg
 
-  self.makeprg = fn.expandcmd(makeprg .. " " .. arg)
+  -- self.makeprg = fn.expandcmd(makeprg .. " " .. arg)
+  self.makeprg = makeprg .. " " .. arg
 end
 
 function Jobs:get_grepprg(arg)
@@ -25,7 +27,8 @@ function Jobs:get_grepprg(arg)
   else
     grepprg = grepprg .. " " .. arg
   end
-  self.grepprg = fn.expandcmd(grepprg)
+  -- self.grepprg = fn.expand(grepprg)
+  self.grepprg = grepprg
 end
 
 -- [[ SETTER FOR QUICKFIX AND LOCATION LIST ]]
