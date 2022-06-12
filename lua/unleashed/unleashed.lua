@@ -144,15 +144,18 @@ function M.ajob(arg, grep, loc, add, bang)
     t.type = "grep"
     t.grepformat = vim.o.grepformat
     t:get_grepprg(arg)
-    t.status = "Running"
     t.jobid = fn.jobstart(t.grepprg, opts)
-  else
+  elseif grep == 0 then
     t.type = "make"
     t.errorformat = vim.o.errorformat
     t:get_makeprg(arg)
-    t.status = "Running"
     t.jobid = fn.jobstart(t.makeprg, opts)
+  else
+    t.type = "find"
+    t:get_findprg(arg)
+    t.jobid = fn.jobstart(t.findprg, opts)
   end
+  t.status = "Running"
 
   t:create_buffer()
   if vim.g.qfunleashed_quick_window == 1 then

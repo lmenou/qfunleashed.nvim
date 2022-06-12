@@ -15,7 +15,6 @@ end
 function Jobs:get_makeprg(arg)
   local makeprg = vim.o.makeprg
 
-  -- self.makeprg = fn.expandcmd(makeprg .. " " .. arg)
   self.makeprg = makeprg .. " " .. arg
 end
 
@@ -27,8 +26,18 @@ function Jobs:get_grepprg(arg)
   else
     grepprg = grepprg .. " " .. arg
   end
-  -- self.grepprg = fn.expand(grepprg)
   self.grepprg = grepprg
+end
+
+function Jobs:get_findprg(arg)
+  local findprg = vim.g.qfunleashed_findprg
+
+  if string.find(findprg, "%$%*") then
+    findprg = string.gsub(findprg, "%$%*", arg)
+  else
+    findprg = findprg .. " " .. arg
+  end
+  self.findprg = findprg
 end
 
 -- [[ SETTER FOR QUICKFIX AND LOCATION LIST ]]
@@ -37,8 +46,11 @@ function Jobs:quickfix_setter()
   if self.type == "make" then
     opts.title = self.makeprg
     opts.efm = self.errorformat
-  else
+  elseif self.type == "grep" then
     opts.title = self.grepprg
+    opts.efm = self.grepformat
+  else
+    opts.title = self.findprg
     opts.efm = self.grepformat
   end
   opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -2, false)
@@ -58,8 +70,11 @@ function Jobs:location_setter()
   if self.type == "make" then
     opts.title = self.makeprg
     opts.efm = self.errorformat
-  else
+  elseif self.type == "grep" then
     opts.title = self.grepprg
+    opts.efm = self.grepformat
+  else
+    opts.title = self.findprg
     opts.efm = self.grepformat
   end
   opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -2, false)
@@ -85,14 +100,26 @@ function Jobs:quickfix_out()
     if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent copen | wincmd p ]]
     end
-    msg = self.type == "grep" and "Grep succeeded !" or "Build failed..."
-    local hlmode = self.type == "grep" and "MoreMsg" or "WarningMsg"
+    if self.type == "grep" then
+      msg = "Grep succeded"
+    elseif self.type == "make" then
+      msg = "Build failed"
+    else
+      msg = "Find successful"
+    end
+    local hlmode = (self.type == "find" or self.type == "grep") and "MoreMsg" or "WarningMsg"
     util.echo_type(hlmode, msg)
   else
     if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent! cclose ]]
     end
-    msg = self.type == "grep" and "Grep empty !" or "Build succeeded !"
+    if self.type == "grep" then
+      msg = "Grep empty"
+    elseif self.type == "make" then
+      msg = "Build successful"
+    else
+      msg = "Find empty"
+    end
     util.echo_type("MoreMsg", msg)
   end
 end
@@ -107,14 +134,26 @@ function Jobs:location_out()
     if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent lopen | wincmd p ]]
     end
-    msg = self.type == "grep" and "Grep succeeded !" or "Build failed..."
-    local hlmode = self.type == "grep" and "MoreMsg" or "WarningMsg"
+    if self.type == "grep" then
+      msg = "Grep succeded"
+    elseif self.type == "make" then
+      msg = "Build failed"
+    else
+      msg = "Find successful"
+    end
+    local hlmode = (self.type == "find" or self.type == "grep") and "MoreMsg" or "WarningMsg"
     util.echo_type(hlmode, msg)
   else
     if vim.g.qfunleashed_quick_open == 1 then
       api.nvim_command [[ silent! lclose ]]
     end
-    msg = self.type == "grep" and "Grep empty !" or "Build succeeded !"
+    if self.type == "grep" then
+      msg = "Grep empty"
+    elseif self.type == "make" then
+      msg = "Build successful"
+    else
+      msg = "Find empty"
+    end
     util.echo_type("MoreMsg", msg)
   end
 end
@@ -136,7 +175,7 @@ function Jobs:write_lines(data)
 end
 
 function Jobs:create_window()
-  api.nvim_command "20split"
+  api.nvim_command "topleft 20split"
   local win_id = fn.win_getid()
   api.nvim_command "wincmd p"
   api.nvim_win_set_option(win_id, "winfixheight", true)

@@ -20,6 +20,10 @@ if !exists('g:qfunleashed_quick_window')
   let g:qfunleashed_quick_window = 0
 end
 
+if !exists('g:qfunleashed_findprg')
+  let g:qfunleashed_findprg = 'find $* -print0 | xargs -0 stat -f "%N:1:%f"' 
+end
+
 command! -bang -bar -nargs=* -complete=file Make 
       \ lua require("unleashed.unleashed").ajob(<q-args>, 0, 0, 0, "<bang>")
 command! -bang -bar -nargs=* -complete=file Lmake
@@ -39,6 +43,10 @@ command! -bang -bar -nargs=+ -complete=file GrepAdd
       \ lua require("unleashed.unleashed").ajob(<q-args>, 1, 0, 1, "<bang>")
 command! -bang -bar -nargs=+ -complete=file LgrepAdd
       \ lua require("unleashed.unleashed").ajob(<q-args>, 1, 1, 1, "<bang>")
+command! -bang -bar -nargs=+ -complete=file Find 
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 2, 0, 0, "<bang>")
+command! -bang -bar -nargs=+ -complete=file Lfind 
+      \ lua require("unleashed.unleashed").ajob(<q-args>, 2, 1, 0, "<bang>")
 command -bar -nargs=? -complete=custom,stopcmd#arg StopJob
       \ lua require("unleashed.unleashed").stop_job(<f-args>)
 
