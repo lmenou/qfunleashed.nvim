@@ -21,7 +21,9 @@ if !exists('g:qfunleashed_quick_window')
 end
 
 if !exists('g:qfunleashed_findprg')
-  let g:qfunleashed_findprg = 'find $* -print0 | xargs -0 stat -f "%N:1:%f"' 
+  " MacOs Unix flavor
+  " TODO: Provide better defaults
+  let g:qfunleashed_findprg = 'find $* -print0 2> /dev/null | xargs -0 stat -f "%N:1:%f"'
 end
 
 command! -bang -bar -nargs=* -complete=file Make 

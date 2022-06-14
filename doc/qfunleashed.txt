@@ -1,4 +1,4 @@
-*qfunleashed.txt*   Asynchronous make and grep for neovim
+*qfunleashed.txt*   Asynchronous filling of the (location)quickfix list.
 
 Author: lmenou
 License: Apache 2.0 (See LICENSE file for details)
@@ -9,6 +9,8 @@ This is a minimal and simple plugin written in lua rending possible an
 asynchronous |:make| and |:grep| in neovim. With this plugin, let us hope you
 will enjoy linting and building your project/code without freezing your
 favourite editor.
+
+The plugin propose also a way to use "find" commands to fill the quickfix list.
 
 1. Usage - Commands                             |qfunleashed-commands|
 2. Configuration                                |qfunleashed-configuration|
@@ -67,6 +69,24 @@ LgrepAdd[!] [{filename}]        Works as |:Lgrep| except that items generated
                                 by the job are appended to the current
                                 |location-list|.
 
+                                *qfunleashed-Find* *:Find*
+Find[!] [{options} {args}]      Start an asynchronous find on the specified
+                                directory and fill the |quickfix| list
+                                asynchronously. A |g:qfunleashed_findprg| and a
+                                |'grepformat'| must be set before running the
+                                command. {options} and {args} are specific
+                                arguments that depends on your chosen
+                                |g:qfunleashed_findprg| and must be given if
+                                necessary. |QuickFixCmdPre| and
+                                |QuickFixCmdPost| should work as expected. If a
+                                bang [!] modifier is added, the first find is
+                                not jumped to. The plugin does not defined
+                                findprg by default.
+
+                                *qfunleashed-Lfind* *:Lfind*
+Lfind[!] [{options} {args}]     Works as |:Find| except that the |location-list| 
+                                is filled instead of the |quickfix| list.
+
                                 *qfunleashed-StopJob* *:StopJob*
 StopJob [{arg}]                 The plugin supports double-job handling. You
                                 can launch two asynchronous jobs, one filling the
@@ -89,20 +109,30 @@ StopJob [{arg}]                 The plugin supports double-job handling. You
                                 *qfunleashed-g:qfunleashed_quick_open* 
                                 *g:qfunleashed_quick_open*
 g:qfunleashed_quick_open        If this global value is set to 1 (Default 0)
-                                in your |init.vim| or |init.lua|, then the quickfix list
-                                (respectively, the location list if a local
-                                asynchronous job was launched) is opened at
-                                the end of the asynchronous job. If the latter
-                                opening is useless because the lists are empty,
-                                they are closed or kept closed. In other words,
-                                the lists are automatically managed.
+                                in your |init.vim| or |init.lua|, then the
+                                quickfix list (respectively, the location list
+                                if a local asynchronous job was launched) is
+                                opened at the end of the asynchronous job. If
+                                the latter opening is useless because the lists
+                                are empty, they are closed or kept closed. In
+                                other words, the lists are automatically
+                                managed.
 
                                 *qfunleashed-g:qfunleashed_quick_window* 
                                 *g:qfunleashed_quick_window*
 g:qfunleashed_quick_window      If this global value is set to 1 (Default 0)
                                 in your |init.vim| or |init.lua|, then while a
-                                job is running a window showing the
-                                output will be open at the top.
+                                job is running a window showing the output will
+                                be opened at the top.
+
+                                *qfunleashed-g:qfunleashed_findprg* 
+                                *g:qfunleashed_findprg*
+g:qfunleashed_findprg           This global value set the findprg used 
+                                to fill the quickfix list. Be careful about the
+                                output, so that the items are detected
+                                properly. One useful way is to pipe the command
+                                through a format format option or command so
+                                that the |grepformat| can be used.
 
 ============================================================================
 3. About the plugin                             *qfunleashed-about*
@@ -113,9 +143,9 @@ https://github.com/lmenou/qfunleashed.nvim/issues. Otherwise, pull requests are
 more than welcome as well at https://github.com/lmenou/qfunleashed.nvim/pulls.
 
 Philosophy of the plugin: This plugin aims at being as minimal as possible. It
-does not (and will not) provide embedded linting in the buffer but rather use
-vim and neovim core functionalities to populate the (location or quickfix)
-with an opinionated and not frustrating better way.
+does not (and so far will not) provide embedded linting in the buffer but
+rather use vim and neovim core functionalities to populate the (location or
+quickfix) with an opinionated and not frustrating better way.
 
 Besides, there is no need to compete with other amazing plugins such as
 syntastic: https://github.com/vim-syntastic/syntastic, ALE:
