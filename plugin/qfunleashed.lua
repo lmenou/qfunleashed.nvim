@@ -4,8 +4,6 @@ if vim.g.loaded_qfunleashed then
 end
 vim.g.loaded_qfunleashed = 1
 
-local util = require "unleashed"
-
 -- Save user compatible options
 local save_cpo = vim.opt.cpo
 vim.opt.cpo = "aABceFs_"
@@ -20,6 +18,17 @@ end
 -- Set the global value
 if not vim.g.qfunleashed_quick_window then
   vim.g.qfunleashed_quick_window = 0
+end
+
+-- Set a find program for Unix like OS
+if not vim.g.qfunleashed_findprg then
+  if vim.fn.has "mac" or vim.fn.has "bsd" then
+    vim.g.qfunleashed_findprg = 'find $* -print0 2> /dev/null | xargs -0 stat -f "%N:1:%f"'
+  elseif vim.fn.has "linux" then
+    vim.g.qfunleashed_findprg = 'find *$ -printf "%p:1:1:%f\n"'
+  elseif vim.fn.has "win32" then
+    vim.api.nvim_echo({ { "M(unleashed): Please, set a qfunleashed_findprg for Windows", "ModeMsg" } }, true, {})
+  end
 end
 
 vim.api.nvim_command [[command! -bang -bar -nargs=* -complete=file Make 
