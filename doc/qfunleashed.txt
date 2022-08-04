@@ -80,8 +80,9 @@ Find[!] [{options} {args}]      Start an asynchronous find on the specified
                                 necessary. |QuickFixCmdPre| and
                                 |QuickFixCmdPost| should work as expected. If a
                                 bang [!] modifier is added, the first find is
-                                not jumped to. The plugin does not defined
-                                findprg by default.
+                                not jumped to. The plugin does define
+                                findprg by default for unix like OS but not
+                                Windows (help needed!).
 
                                 *qfunleashed-Lfind* *:Lfind*
 Lfind[!] [{options} {args}]     Works as |:Find| except that the |location-list| 
@@ -132,7 +133,9 @@ g:qfunleashed_findprg           This global value set the findprg used
                                 output, so that the items are detected
                                 properly. One useful way is to pipe the command
                                 through a format format option or command so
-                                that the |grepformat| can be used.
+                                that the |grepformat| can be used. See default
+                                findprgs set in plugin/qfunleashed.lua for
+                                examples.
 
 ============================================================================
 3. About the plugin                             *qfunleashed-about*

@@ -52,6 +52,9 @@ window. If you set `g:qfunleashed_quick_open` (See Configuration part), the quic
 location) window will open automatically with (provided the good errorformat)
 errors parsed.
 
+`Find` and `Lfind` are also provided to fill your lists with items a similar
+way. This might be useful for `cdo` like commands.
+
 Please, feel free to read the help for further information.
 
 ## Configuration
