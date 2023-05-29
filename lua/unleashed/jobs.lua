@@ -10,6 +10,17 @@ function Jobs:new(t)
   return t
 end
 
+-- [[ MESSAGER AT THE END OF THE PROCESS ]]
+function Jobs:messager(msg)
+  local final_msg
+  if self.first == 1 then
+    final_msg = string.format(msg .. " (1 of %s): %s", self.non_nil[1], self.non_nil[2])
+  else
+    final_msg = string.format(msg .. " (%s items)", self.non_nil[1])
+  end
+  return final_msg
+end
+
 -- [[ GET THE ASYNC PRG PROPERTIES ]]
 -- NOTE: It seems that the expansion is already taken care of
 function Jobs:get_makeprg(arg)
@@ -55,7 +66,7 @@ function Jobs:quickfix_setter()
   end
   opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -2, false)
   if opts.lines[1] and opts.lines[1] ~= "" then
-    self.non_nil = 1
+    self.non_nil = { #opts.lines, string.gsub(opts.lines[1], '"', '\\"') }
   end
   if self.adding == 0 then
     fn.setqflist({}, " ", opts)
@@ -79,7 +90,7 @@ function Jobs:location_setter()
   end
   opts.lines = api.nvim_buf_get_lines(self.scratch_buf_id, 0, -2, false)
   if opts.lines[1] and opts.lines[1] ~= "" then
-    self.non_nil = 1
+    self.non_nil = { #opts.lines, string.gsub(opts.lines[1], '"', '\\"') }
   end
   if self.adding == 0 then
     fn.setloclist(0, {}, " ", opts)
@@ -108,6 +119,7 @@ function Jobs:quickfix_out()
       msg = "Find successful"
     end
     local hlmode = (self.type == "find" or self.type == "grep") and "MoreMsg" or "WarningMsg"
+    msg = self:messager(msg)
     util.echo_type(hlmode, msg)
   else
     if vim.g.qfunleashed_quick_open == 1 then
@@ -142,6 +154,7 @@ function Jobs:location_out()
       msg = "Find successful"
     end
     local hlmode = (self.type == "find" or self.type == "grep") and "MoreMsg" or "WarningMsg"
+    msg = self:messager(msg)
     util.echo_type(hlmode, msg)
   else
     if vim.g.qfunleashed_quick_open == 1 then

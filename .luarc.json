@@ -1,0 +1,27 @@
+{
+    "workspace.library": [
+        "/home/lmenou/.config/nvim",
+        "/home/lmenou/.local/share/nvim/site",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/LuaSnip",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp-buffer",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp-nvim-lsp",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp-nvim-lsp-signature-help",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp_luasnip",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/nvim",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/nvim-cmp",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/nvim-fzy",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/nvim-lspconfig",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/nvim-treesitter",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/paq-nvim",
+        "/home/lmenou/.local/share/nvim/site/pack/plugins/start/qfunleashed.nvim",
+        "/usr/local/share/nvim/runtime",
+        "/usr/local/lib/nvim",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp-buffer/after",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp-nvim-lsp/after",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp-nvim-lsp-signature-help/after",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/cmp_luasnip/after",
+        "/home/lmenou/.local/share/nvim/site/pack/paqs/start/nvim/after",
+        "/home/lmenou/.config/nvim/after",
+        "${3rd}/luassert/library"
+    ]
+}
