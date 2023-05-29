@@ -147,7 +147,7 @@ function Jobs:location_out()
       api.nvim_command [[ silent lopen | wincmd p ]]
     end
     if self.type == "grep" then
-      msg = "Grep succeded"
+      msg = "Grep succeeded"
     elseif self.type == "make" then
       msg = "Build failed"
     else
