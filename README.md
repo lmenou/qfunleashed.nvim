@@ -3,8 +3,8 @@ This is a simple plugin to use the vim `:make` and `:grep` command
 asynchronously in Neovim.
 
 If you do not know what those commands are/do, I highly suggest you to type
-`:help quickfix<CR>`, Vim/Neovim's compiler system is a reason to simply stick
-with them to edit your amazing pieces of codes.
+`:help quickfix<CR>`, Vim/Neovim's compiler system is one of the reason to stick
+with those editors to edit your amazing pieces of codes.
 
 ## Why ?  
 With LSP integrated in Neovim, I admit that this plugin seems already
