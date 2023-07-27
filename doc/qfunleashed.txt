@@ -128,11 +128,11 @@ g:qfunleashed_quick_window      If this global value is set to 1 (Default 0)
 
                                 *qfunleashed-g:qfunleashed_findprg* 
                                 *g:qfunleashed_findprg*
-g:qfunleashed_findprg           This global value set the findprg used 
-                                to fill the quickfix list. Be careful about the
+g:qfunleashed_findprg           This global value set the findprg used to fill
+                                the quickfix list. Be careful about the
                                 output, so that the items are detected
-                                properly. One useful way is to pipe the command
-                                through a format format option or command so
+                                properly. One useful way is to pipe the
+                                command through a format option or command so
                                 that the |grepformat| can be used. See default
                                 findprgs set in plugin/qfunleashed.lua for
                                 examples.
