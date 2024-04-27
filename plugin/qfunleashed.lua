@@ -31,7 +31,7 @@ if not vim.g.qfunleashed_findprg then
   end
 end
 
-vim.api.nvim_command [[command! -bang -bar -nargs=* -complete=file Make 
+vim.api.nvim_command [[command! -bang -bar -nargs=* -complete=file Make
       lua require("unleashed.unleashed").ajob(<q-args>, 0, 0, 0, "<bang>") ]]
 vim.api.nvim_command [[ command! -bang -bar -nargs=* -complete=file Lmake
       lua require("unleashed.unleashed").ajob(<q-args>, 0, 1, 0, "<bang>") ]]
@@ -39,17 +39,17 @@ vim.api.nvim_command [[ command! -bang -bar -nargs=* -complete=file Lmake
 -- NOTE: Possible but perhaps useless
 -- Following same convention, it should possible to add a MakeAdd and an LmakeAdd command
 
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Grep 
+vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Grep
       lua require("unleashed.unleashed").ajob(<q-args>, 1, 0, 0, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Lgrep 
+vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Lgrep
       lua require("unleashed.unleashed").ajob(<q-args>, 1, 1, 0, "<bang>") ]]
 vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file GrepAdd
       lua require("unleashed.unleashed").ajob(<q-args>, 1, 0, 1, "<bang>") ]]
 vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file LgrepAdd
       lua require("unleashed.unleashed").ajob(<q-args>, 1, 1, 1, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Find 
+vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Find
       lua require("unleashed.unleashed").ajob(<q-args>, 2, 0, 0, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Lfind 
+vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Lfind
       lua require("unleashed.unleashed").ajob(<q-args>, 2, 1, 0, "<bang>") ]]
 vim.api.nvim_command [[ command -bar -nargs=? -complete=custom,stopcmd#arg StopJob
       lua require("unleashed.unleashed").stop_job(<f-args>) ]]
