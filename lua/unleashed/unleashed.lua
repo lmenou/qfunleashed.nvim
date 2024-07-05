@@ -84,10 +84,10 @@ end
 
 -- [[ THE MODULE ITSELF ]]
 
-function M.stop_job(arg)
+function M.stop_job(tab)
   local jobstop
   local valid_arg = { "quickfix", "location", "all", "" }
-  local loc, valid = util.is_in_table(valid_arg, arg)
+  local loc, valid = util.is_in_table(valid_arg, tab.arg)
 
   if valid then
     jobs_list:find_job_to_stop(loc, "Running")
@@ -111,23 +111,28 @@ function M.stop_job(arg)
   end
 end
 
-function M.ajob(arg, grep, loc, add, bang)
+function M.ajob(tab)
+  print(vim.inspect(tab))
+
+  local loc = string.sub(tab.name, 1, 1) == "L" and 1 or 0
+  local adding = string.find(tab.name, "Add") and 1 or 0
+  local grep = string.find(tab.name, "[Gg]rep") and 1 or 0
+
   local error = jobs_list:job_checker(loc)
   if error then
     return
   end
 
   local t = Jobs:new()
-
   t.loc = loc
 
-  if bang == "!" then
+  if tab.bang then
     t.first = 0
   else
     t.first = 1
   end
 
-  t.adding = add
+  t.adding = adding
   t.data = {}
 
   local opts = {
@@ -143,16 +148,16 @@ function M.ajob(arg, grep, loc, add, bang)
   if grep == 1 then
     t.type = "grep"
     t.grepformat = vim.o.grepformat
-    t:get_grepprg(arg)
+    t:get_grepprg(tab.args)
     t.jobid = fn.jobstart(t.grepprg, opts)
   elseif grep == 0 then
     t.type = "make"
     t.errorformat = vim.o.errorformat
-    t:get_makeprg(arg)
+    t:get_makeprg(tab.args)
     t.jobid = fn.jobstart(t.makeprg, opts)
   else
     t.type = "find"
-    t:get_findprg(arg)
+    t:get_findprg(tab.args)
     t.jobid = fn.jobstart(t.findprg, opts)
   end
   t.status = "Running"

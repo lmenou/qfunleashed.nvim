@@ -31,28 +31,33 @@ if not vim.g.qfunleashed_findprg then
   end
 end
 
-vim.api.nvim_command [[command! -bang -bar -nargs=* -complete=file Make
-      lua require("unleashed.unleashed").ajob(<q-args>, 0, 0, 0, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=* -complete=file Lmake
-      lua require("unleashed.unleashed").ajob(<q-args>, 0, 1, 0, "<bang>") ]]
-
 -- NOTE: Possible but perhaps useless
 -- Following same convention, it should possible to add a MakeAdd and an LmakeAdd command
 
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Grep
-      lua require("unleashed.unleashed").ajob(<q-args>, 1, 0, 0, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Lgrep
-      lua require("unleashed.unleashed").ajob(<q-args>, 1, 1, 0, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file GrepAdd
-      lua require("unleashed.unleashed").ajob(<q-args>, 1, 0, 1, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file LgrepAdd
-      lua require("unleashed.unleashed").ajob(<q-args>, 1, 1, 1, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Find
-      lua require("unleashed.unleashed").ajob(<q-args>, 2, 0, 0, "<bang>") ]]
-vim.api.nvim_command [[ command! -bang -bar -nargs=+ -complete=file Lfind
-      lua require("unleashed.unleashed").ajob(<q-args>, 2, 1, 0, "<bang>") ]]
-vim.api.nvim_command [[ command -bar -nargs=? -complete=custom,stopcmd#arg StopJob
-      lua require("unleashed.unleashed").stop_job(<f-args>) ]]
+local ajob = require("unleashed.unleashed").ajob
+local stop_job = require("unleashed.unleashed").stop_job
+
+local makers = { { "Make", "Lmake" }, { bang = true, bar = true, nargs = "*", complete = "file" } }
+local grepfinders = {
+  { "Grep", "Lgrep", "GrepAdd", "LgrepAdd", "Find", "Lfind" },
+  { bang = true, bar = true, nargs = "+", complete = "file" },
+}
+
+local create_commands = function(tab_cmds, tab_opts)
+  for _, v in pairs(tab_cmds) do
+    vim.api.nvim_create_user_command(v, ajob, tab_opts)
+  end
+end
+
+for _, v in pairs { makers, grepfinders } do
+  create_commands(v[1], v[2])
+end
+
+vim.api.nvim_create_user_command("StopJob", stop_job, {
+  bar = true,
+  nargs = "?",
+  complete = "custom,stopcmd#arg",
+})
 
 -- Restore compatible options
 vim.opt.cpo = save_cpo
