@@ -116,7 +116,6 @@ function M.ajob(tab)
 
   local loc = string.sub(tab.name, 1, 1) == "L" and 1 or 0
   local adding = string.find(tab.name, "Add") and 1 or 0
-  local grep = string.find(tab.name, "[Gg]rep") and 1 or 0
 
   local error = jobs_list:job_checker(loc)
   if error then
@@ -145,12 +144,12 @@ function M.ajob(tab)
 
   api.nvim_command [[doautocmd QuickFixCmdPre]]
 
-  if grep == 1 then
+  if string.find(tab.name, "[Gg]rep") then
     t.type = "grep"
     t.grepformat = vim.o.grepformat
     t:get_grepprg(tab.args)
     t.jobid = fn.jobstart(t.grepprg, opts)
-  elseif grep == 0 then
+  elseif string.find(tab.name, "[Mm]ake") then
     t.type = "make"
     t.errorformat = vim.o.errorformat
     t:get_makeprg(tab.args)
