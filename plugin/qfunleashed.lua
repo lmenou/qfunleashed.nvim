@@ -22,12 +22,12 @@ end
 
 -- Set a find program for Unix like OS
 if not vim.g.qfunleashed_findprg then
-  if vim.fn.has "mac" or vim.fn.has "bsd" then
+  if vim.fn.has "mac" == 1 then
     vim.g.qfunleashed_findprg = 'find $* -print0 2> /dev/null | xargs -0 stat -f "%N:1:%f"'
-  elseif vim.fn.has "linux" then
-    vim.g.qfunleashed_findprg = 'find *$ -printf "%p:1:1:%f\n"'
-  elseif vim.fn.has "win32" then
-    vim.api.nvim_echo({ { "M(unleashed): Please, set a qfunleashed_findprg for Windows", "ModeMsg" } }, true, {})
+  elseif vim.fn.has "linux" == 1 then
+    vim.g.qfunleashed_findprg = 'find $* -printf "%p:1:1:%f\n"'
+  else
+    vim.api.nvim_echo({ { "M(unleashed): Please, set a qfunleashed_findprg for your OS", "ModeMsg" } }, true, {})
   end
 end
 
