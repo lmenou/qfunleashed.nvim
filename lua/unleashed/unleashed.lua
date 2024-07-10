@@ -112,8 +112,6 @@ function M.stop_job(tab)
 end
 
 function M.ajob(tab)
-  print(vim.inspect(tab))
-
   local loc = string.sub(tab.name, 1, 1) == "L" and 1 or 0
   local adding = string.find(tab.name, "Add") and 1 or 0
 
