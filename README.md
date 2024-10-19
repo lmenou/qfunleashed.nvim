@@ -13,7 +13,7 @@ see lints that I do not care about in my (ugly) code. Yes, configuration
 always bothers me.  Also, I like the `:make`, `:grep` commands.
 
 ## Requirements :lock_with_ink_pen:
-- [Neovim 0.5](https://github.com/neovim/neovim)  
+- [Neovim >= 0.8](https://github.com/neovim/neovim)  
 - Some compilers  
 - Some "greppers"  
 
